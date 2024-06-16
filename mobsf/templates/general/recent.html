@@ -1,16 +1,16 @@
 
-{% extends "base/base_layout.html" %}
+{% extends "layouts/base-fullscreen.html" %}
 {% load static %}
  {% block sidebar_option %}
       sidebar-collapse
 {% endblock %}
  {% block extra_css %}
-<link href="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet">
+<!-- <link href="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet"> -->
 
 <style>
 #app_icon{
-        width: 64px;
-        height: 64px;
+        width: 32px;
+        height: 32pxpx;
     }
 .selected {
     background-color: lightgreen !important;
@@ -22,160 +22,91 @@
 </style>
 {% endblock %}
 {% block content %}
-<div class="content-wrapper">
-  <div class="content-header">
-  </div>
-   <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-            <div class="card">
-              <div class="card-body">
-                
-
-                 <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-rocket"></i> Recent Scans</h3>
-        </div>
-
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>APP</th>
-                        <th>FILE</th>
-                        <th>TYPE</th>
-                        <th>HASH</th>
-                        <th>SCAN DATE</th>
-                        <th style="width: 9%">ACTIONS</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for e in entries %}
-                        <tr>
-                            <td style="text-align: center;">
-                                <img id="app_icon" src="{% if e.ICON_PATH %}/download/{{ e.ICON_PATH }}{% else %}{% static 'img/no_icon.png' %}{% endif %}">
-                                {% if e.PACKAGE_NAME or e.APP_NAME %}
-                                  <br/><strong>{{ e.APP_NAME }} {% if e.VERSION_NAME %} - {{ e.VERSION_NAME }} {% endif %}</strong>
-                                  </br>{{ e.PACKAGE_NAME }}
-                                  {% if e.FILE_NAME|slice:"-6:" != '.dylib' %}
-                                  {% if e.FILE_NAME|slice:"-5:" != '.appx' %}
-                                    {% if e.FILE_NAME|slice:"-3:" != '.so' %}
-                                      {% if e.FILE_NAME|slice:"-2:" != '.a' %}
-                                    <p> <a href="{% url "appsec_dashboard" checksum=e.MD5 %}" class="btn btn-sm btn-outline-primary" role="button"><i class="fas fa-user-shield"></i> MobSF Scorecard</a></p>
-                                      {% endif %}
-                                    {% endif %}
-                                    {% endif %}
-                                  {% endif %}
-                                  <p><a class="btn btn-primary btn-sm" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> Static Report</a>
-                                  {% if '.apk' == e.FILE_NAME|slice:"-4:" or '.xapk' == e.FILE_NAME|slice:"-5:" or '.apks' == e.FILE_NAME|slice:"-5:" or '.aab' == e.FILE_NAME|slice:"-4:" %}
-                                    <a  class="btn btn-success btn-sm {% if not e.DYNAMIC_REPORT_EXISTS %}disabled{% endif %}" href="{% url "dynamic_report" checksum=e.MD5 %}"><i class="fa fa-mobile"></i> Dynamic Report</a>
-                                  {% elif '.ipa' == e.FILE_NAME|slice:"-4:" %}
-                                    {% if e.PACKAGE_NAME %}
-                                        <a  class="btn btn-success btn-sm {% if not e.DYNAMIC_REPORT_EXISTS %}disabled{% endif %}" href="{% url "ios_view_report" bundle_id=e.PACKAGE_NAME %}"><i class="fa fa-mobile"></i> Dynamic Report</a>
-                                    {% endif %}
-                                  {% endif %}
-                                  </p>
-                                {% else %}
-                                </br><span class="badge bg-warning">scan not completed</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ e.FILE_NAME }}
-                            </td>
-                            <td style="text-align: center;">
-                                {% if '.apk' == e.FILE_NAME|slice:"-4:"%}<i class="fab fa-android fa-3x"></i>
-                                {% elif '.xapk' == e.FILE_NAME|slice:"-5:"%}<i class="fab fa-android fa-3x"></i>
-                                {% elif '.apks' == e.FILE_NAME|slice:"-5:"%}<i class="fab fa-android fa-3x"></i>
-                                {% elif '.aab' == e.FILE_NAME|slice:"-4:"%}<i class="fab fa-android fa-3x"></i>
-                                {% elif '.jar' == e.FILE_NAME|slice:"-4:"%}<i class="fab fa-java fa-3x"></i>
-                                {% elif '.aar' == e.FILE_NAME|slice:"-4:"%}<i class="fas fa-table fa-3x"></i>
-                                {% elif '.so' == e.FILE_NAME|slice:"-3:"%}<i class="fa fa-th-large fa-3x"></i>
-                                {% elif '.ipa' == e.FILE_NAME|slice:"-4:"%}<i class="fab fa-apple fa-3x"></i>
-                                {% elif '.dylib' == e.FILE_NAME|slice:"-6:"%}<i class="fa fa-th-large fa-3x"></i>
-                                {% elif '.a' == e.FILE_NAME|slice:"-2:"%}<i class="fa fa-th-large fa-3x"></i>
-                                {% elif '.zip' == e.FILE_NAME|slice:"-4:"%}<i class="fas fa-file-archive fa-3x"></i>
-                                {% elif '.appx' == e.FILE_NAME|slice:"-5:"%}<i class="fab fa-windows fa-3x"></i>
-                                {% endif %}
-                            </td>
-                            <td>{{ e.MD5 }}</td>
-                            <td>{{ e.TIMESTAMP }}</td>
-                            <td><p>
-                                   <a class="btn btn-outline-primary btn-sm" href="{% url "pdf" checksum=e.MD5%}"><i class="fas fa-file-pdf"></i></a>
-                                   <a class="btn btn-outline-info btn-sm" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/?rescan=1"><i class="fas fa-sync-alt"></i></a>
-                                </p>
-                            {% if '.apk' == e.FILE_NAME|slice:"-4:" or '.xapk' == e.FILE_NAME|slice:"-5:" or '.apks' == e.FILE_NAME|slice:"-5:" or '.aab' == e.FILE_NAME|slice:"-4:"%}
-                                <p><a class="diffButton btn btn-warning btn-sm" id="{{ e.MD5 }}_{{ e.FILE_NAME }}"><i class="fas fa-not-equal"></i> Diff or Compare</a>
-                                </p>
-                            {% endif %}
-                            <p> <a class="btn btn-danger btn-sm" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fa fa-trash"></i> Delete Scan</a> </p>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!--pagination-->
-            <nav aria-label="Pagination">
-                <ul class="pagination justify-content-center">
-                  {% if page_obj.has_previous %}
-                  <li class="page-item">
-                    <a class="page-link" href="{% url 'scans_paginated' page_size=page_obj.page_size page_number=page_obj.previous_page_number %}">Previous</a>
-                  </li>   
-                  {% else %}
-                  <li class="page-item">
-                  <a class="page-link">Previous</a>
-                  </li>
-                  {% endif %}
-      
-                  {% for i in page_obj.paginator.page_range %}
-                  {% if page_obj.number == i %}
-                  <li class="page-item active">
-                      <a class="page-link" href="#">{{ i }} </a>
-                  </li>
-                  {% else %}
-                  <li class="page-item">
-                      <a class="page-link" href="{% url 'scans_paginated' page_size=page_obj.page_size page_number=i %}">{{ i }}</a>
-                  </li>
-                  {% endif %}
-                  {% endfor %}
-      
-                  {% if page_obj.has_next %}
-                  <li class="page-item">
-                    <a class="page-link" href="{% url 'scans_paginated' page_size=page_obj.page_size page_number=page_obj.next_page_number %}">Next</a>
-                   </li>
-                  {% else %}
-                  <li class="page-item">
-                    <a class="page-link">Next</a>
-                  </li>
-                  {% endif %}
-                  <li class="page-item">
-                    <div class="dropdown">
-                        <button class="page-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Items per page
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=5 page_number=page_obj.number %}">5</a>
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=10 page_number=page_obj.number %}">10</a>
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=20 page_number=page_obj.number %}">20</a>
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=50 page_number=page_obj.number %}">50</a>
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=100 page_number=page_obj.number %}">100</a>
-                          <a class="dropdown-item" href="{% url 'scans_paginated' page_size=250 page_number=page_obj.number %}">250</a>
+{% include 'includes/navigation-light.html' %} 
+<section>
+    <div class="page-header min-vh-65">
+        <div class="container">
+                <div class="card">
+                    <div class="card-header pb-0">
+                      <div class="row">
+                        <div class="col-lg-6 col-7">
+                          <h6>Recent Scans</h6>
+                          {% comment %} <p class="text-sm mb-0">
+                            <i class="fa fa-check text-info" aria-hidden="true"></i>
+                            <span class="font-weight-bold ms-1">30 done</span> this month
+                          </p> {% endcomment %}
                         </div>
+                        {% comment %} <div class="col-lg-6 col-5 my-auto text-end">
+                          <div class="dropdown float-lg-end pe-4">
+                            <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fa fa-ellipsis-v text-secondary" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                              <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a></li>
+                              <li><a class="dropdown-item border-radius-md" href="javascript:;">Another action</a></li>
+                              <li><a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a></li>
+                            </ul>
+                          </div>
+                        </div> {% endcomment %}
                       </div>
-                </ul>
-              </nav>
-            <!--end pagination-->
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                      <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                          <thead>
+                            <tr>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">App</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">File</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Package</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Scan Date</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for e in entries %}
+                            <tr>
+                              <td>
+                                <div class="d-flex px-2 py-1">
+                                  <div>
+                                    <img class="avatar avatar-sm me-3" src="{% if e.ICON_PATH %}/download/{{ e.ICON_PATH }}{% else %}{% static 'img/no_icon.png' %}{% endif %}">
+                                  </div>
+                                  <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">{{ e.APP_NAME }}{% if e.VERSION_NAME %} - {{ e.VERSION_NAME }}{% endif %}</h6>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class=" text-sm">
+                                {{ e.FILE_NAME }}
+                              </td>
+                              <td class=" text-sm">
+                                {{ e.PACKAGE_NAME }}
+                              </td>
+                              <td class="text-sm">                                
+                                    {% if e.PACKAGE_NAME or e.APP_NAME %}
+                                    <span class="text-xs font-weight-bold"> 
+                                    {{ e.TIMESTAMP }}
+                                    </span>
+                                    {% else %}
+                                    <div class="text-xs font-weight-bold ">
+                                        <i class="material-icons text-sm my-auto me-1">schedule</i>
+                                        <p class="mb-0 text-sm"> Scanning </p>
+                                      </div>
+                                    {% endif %}
+                                    
+                              </td>
+                              <td class="align-middle">
+                                <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View Report</a>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
         </div>
-        <!-- /.box-body -->
     </div>
-
-
-          </div>
-        </div>
-       </div>
-     </div>
-    </div>
-</div>
+</section>
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.js" %}"></script>
@@ -284,7 +215,7 @@
                     dataType: 'json',
                         data : {
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                                md5: md5_hash,
+                    md5hash,
                                 },
                             success : function(json) {
                                 if (json.deleted==='yes'){

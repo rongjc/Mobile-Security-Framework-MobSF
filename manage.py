@@ -16,3 +16,4 @@ if __name__ == '__main__':
               'https://mobsf.github.io/docs/')
         sys.exit(0)
     execute_from_command_line(sys.argv)
+
