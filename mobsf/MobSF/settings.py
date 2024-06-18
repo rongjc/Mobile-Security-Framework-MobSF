@@ -482,9 +482,9 @@ else:
     # Get AppMonsta API from https://appmonsta.com/dashboard/get_api_key/
     APPMONSTA_API = os.getenv('MOBSF_APPMONSTA_API', '')
     # ----------VirusTotal--------------------------
-    VT_ENABLED = bool(os.getenv('MOBSF_VT_ENABLED', ''))
-    VT_API_KEY = os.getenv('MOBSF_VT_API_KEY', '')
-    VT_UPLOAD = bool(os.getenv('MOBSF_VT_UPLOAD', ''))
+    VT_ENABLED = bool(os.getenv('MOBSF_VT_ENABLED', 'true'))
+    VT_API_KEY = os.getenv('MOBSF_VT_API_KEY', '0448dadb30235d8b6c72260909fe4ba32b23ef8c359808bad7bd831f0a1ce323')
+    VT_UPLOAD = bool(os.getenv('MOBSF_VT_UPLOAD', 'true'))
     # Before setting VT_ENABLED to True,
     # Make sure VT_API_KEY is set to your VirusTotal API key
     # register at: https://www.virustotal.com/#/join-us

@@ -1,4 +1,4 @@
-{% extends "layouts/base-fullscreen.html" %}
+{% extends "layouts/base-top-nav.html" %}
 {% load static %}
  {% block sidebar_option %}
       sidebar-collapse
@@ -8,10 +8,9 @@
 <link rel="stylesheet" href="{% static "landing/css/home.css" %}">
 {% endblock %}
 {% block content %}
-{% include 'includes/navigation-light.html' %} 
 <section>
-    <div class="page-header min-vh-65 d-flex h-100 p-3 mx-auto flex-column">
-        <div class="container">
+    <div class="page-header d-flex h-100 p-3 mx-auto flex-column">
+        <div class="container mt-5">
             <div class="row">
               <div class="col-lg-5 col-md-7 mx-auto">
                 <div class="card">

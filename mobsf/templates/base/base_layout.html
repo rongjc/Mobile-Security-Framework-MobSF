@@ -6,8 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{{title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Mobile Security Framework - MobSF">
-  <meta name="author" content="Ajin Abraham">
   <link rel="icon" href="{% static "img/favicon.ico" %}">
 
   <!-- Tell the browser to be responsive to screen width -->
@@ -26,12 +24,12 @@
 
   {% endblock %}
 </head>
-<body class="hold-transition {% block sidebar_option %} {% endblock %} layout-fixed layout-navbar-fixed">
+<body class="hold-transition {% block sidebar_option %} {% endblock %} layout-fixed ">
 <div class="wrapper">
-{% include "base/nav.html" %}    
+
  <!-- sidebar-->
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  {% comment %} <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{% url 'home' %}" class="brand-link">
       <img src="{% static "img/mobsf_icon.png" %}" alt="MobSF" class="brand-image"
@@ -41,7 +39,7 @@
     {% block sidebar %}
   
     {% endblock %}
-  </aside>
+  </aside> {% endcomment %}
  <!-- /.sidebar -->
   <!-- Content Wrapper. Contains page content -->
   {% block content %}

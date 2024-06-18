@@ -1,0 +1,89 @@
+<!--
+=========================================================
+* Material Kit 2 - v3.0.0
+=========================================================
+
+* Product Page:  https://www.creative-tim.com/product/material-kit 
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+
+  <title>
+    Django Material Kit 2 - {% block title %}{% endblock %} | AppSeed
+  </title>
+  
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <!-- Nucleo Icons -->
+  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <!-- CSS Files -->
+  <link id="pagestyle" href="/static/assets/css/material-kit.css?v=3.0.0" rel="stylesheet" />
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static "adminlte/dashboard/css/adminlte.min.css" %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static "adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" %}">
+  <!-- Specific Page CSS goes HERE  -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+
+<body class="hold-transition {% block sidebar_option %} {% endblock %} layout-fixed layout-navbar-fixed sidebar-collapse">
+  
+  <div class="mt-5">
+     <!-- sidebar-->
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-light-primary elevation-4 ">
+        {% block sidebar %}
+      
+        {% endblock %}
+      </aside>
+     <!-- /.sidebar -->
+  <!-- Content Wrapper. Contains page content -->
+  
+  {% block content %}{% endblock content %}  
+
+  {% include 'includes/scripts.html' %} 
+
+  <!-- jQuery -->
+  <script src="{% static "adminlte/plugins/jquery.min.js" %}"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="{% static "adminlte/plugins/jquery-ui.min.js" %}"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static "adminlte/plugins/bootstrap/bootstrap.bundle.min.js" %}"></script>
+  <!-- overlayScrollbars -->
+  <script src="{% static "adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static "adminlte/dashboard/js/adminlte.min.js" %}"></script>
+  <script>
+  // navbar hack
+  if ($(".sidebar-collapse")[0])
+  document.getElementById("nbar").style.display = "none";
+  </script>
+
+
+   <!-- Specific Page JS goes HERE  -->
+   {% block javascripts %}{% endblock javascripts %}
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+{% load static %}
+<div class="card card-body mx-3 mx-md-4 mt-n6">
+  <div class="row gx-4 mb-2">
+    <div class="col-auto">
+      <div class="avatar avatar-xl position-relative">
+        {% if app_type not in 'so' %}
+        <img id="app_icon" src="{% if icon_path %}/download/{{icon_path}}{% else %}{% static 'img/no_icon.png' %}{% endif %}"/>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-auto my-auto">
+      <div class="h-100">
+        <h5 class="mb-1">{{ app_name }}</h5>
+        <p class="mb-0 font-weight-normal text-sm">{{ package_name }}</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+    </div>
+  </div>
+  <div class="row">
+    <div class="row">
+      <div class="col-12 col-xl-6">
+        <div class="card card-plain h-100">
+          <div class="card-header pb-0 p-3">
+            <h6 class="mb-0">File Information</h6>
+          </div>
+          <div class="card-body p-3">
+            <ul class="list-group">
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                <strong class="text-dark">File Name:</strong> &nbsp; {{ file_name }}
+              </li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Size:</strong> &nbsp; {{ size }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">MD5:</strong> &nbsp; {{ md5 }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">SHA1:</strong> &nbsp; {{ sha1 }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">SHA256:</strong> &nbsp; {{ sha256 }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-6">
+        <div class="card card-plain h-100">
+          <div class="card-header pb-0 p-3">
+            <h6 class="mb-0">App Information</h6>
+          </div>
+          <div class="card-body p-3">
+            <ul class="list-group">
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">App Name:</strong> &nbsp; {{ app_name }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Package Name:</strong> &nbsp; {{ package_name }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Main Activity:</strong> &nbsp; {{ main_activity }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Target SDK:</strong> &nbsp; {{ target_sdk }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Min SDK:</strong> &nbsp; {{ min_sdk }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Max SDK:</strong> &nbsp; {{ max_sdk }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Android Version Name:</strong> &nbsp; {{ version_name }}</li>
+              <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Android Version Code:</strong> &nbsp; {{ version_code }}</li>      
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-12">
+        <div class="card card-plain h-100">
+          <div class="card-header pb-0 p-3">
+            <h6 class="mb-0">Signer Certificate</h6>
+          </div>
+          <div class="card-body p-3">
+            {% if certificate_analysis %}
+              <pre><code>{{ certificate_analysis.certificate_info }}</code></pre>
+           {% else %}
+           Failed to read Code Signing Certificate.
+           {% endif %}   
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-12">
+        <div class="card card-plain h-100">
+          <div class="card-header pb-0 p-3">
+            <h6 class="mb-0">Decompiled code</h6>
+          </div>
+          <div class="card-body p-3">
+            <p>
+            {% if app_type not in 'jar' %}
+            <a target="_blank" href="{% url "manifest_view" checksum=md5 %}?type={{ app_type }}" role="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-eye"></i>  View AndroidManifest.xml</a>
+            {% endif %}
+            <a target="_blank" href="{% url "tree_view" %}?md5={{ md5 }}&amp;type=java" class="btn btn-outline-primary btn-sm mb-0" role="button"><i class="fa fa-code"></i> View Source</a>
+            {% if app_type not in 'jar,aar' %}
+            <a target="_blank" href="{% url "tree_view" %}?md5={{ md5 }}&amp;type=smali" class="btn btn-outline-primary btn-sm mb-0" role="button"><i class="fa fa-code"></i> View Smali</a>
+            {% endif %}
+            </p>
+            <p>
+            <a target="_blank" href="{% url 'generate_downloads' %}?hash={{ md5 }}&amp;file_type=java" class="btn btn-outline-primary btn-sm mb-0" role="button"> <i class="fa fa-download"></i> Download Java Code</a>
+            {% if app_type not in 'jar,aar' %}
+            <a target="_blank" href="{% url 'generate_downloads' %}?hash={{ md5 }}&amp;file_type=smali" class="btn btn-outline-primary btn-sm mb-0"> <i class="fa fa-download"></i> Download Smali Code</a>
+            {% endif %}
+            <a target="_blank" href="{% url 'generate_downloads' %}?hash={{ md5 }}&amp;file_type={{ app_type }}" class="btn btn-outline-primary btn-sm mb-0"> <i class="fa fa-download"></i> Download {{ app_type | upper}}</a>       
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

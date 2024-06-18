@@ -1,0 +1,52 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Network Security Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
+          {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if network_security and 'network_findings' in network_security %}
+        {% for item in network_security.network_findings %}
+        <tr>
+        
+        <td class="col-12 col-xl-1 text-sm p-3">                          
+          {% if item.severity == "high" %}
+            <span class="badge bg-danger">high</span>
+          {% elif item.severity == "secure" %}
+            <span class="badge bg-success">secure</span>
+          {% elif item.severity == "info" %}
+            <span class="badge bg-info">info</span>
+          {% elif item.severity == "warning" %}
+            <span class="badge bg-warning">warning</span>
+          {% endif %}
+        </td>
+        {% comment %} <td class="col-12 col-xl-3 text-sm p-3 f">{{ details }}</td> {% endcomment %}
+        <td class="col-12 col-xl-6 text-sm p-3">
+          {% for url in item.scope %}
+            {{ url }}</br>
+          {% endfor %}
+        </td>
+        <td class="col-12 col-xl-2 text-sm p-3">
+            {{item.description }}
+        </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}
