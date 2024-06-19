@@ -314,7 +314,23 @@ def static_analyzer(request, checksum, api=False):
                 context['code_analysis'])
             context['dynamic_analysis_done'] = is_file_exists(
                 os.path.join(app_dic['app_dir'], 'logcat.txt'))
-
+            
+            context['architecture'] = {}
+            for s in context['binary_analysis']:
+                # Split the string into parts
+                if 'name' in s.keys():
+                    parts = relative_path(s['name']).split('/')
+                    if len(parts) == 2:
+                        xxx, bbb = parts
+                        # Check if the key exists in the dictionary
+                        if bbb in context['architecture']:
+                            # Append to the existing list for this key
+                            context['architecture'][bbb].append(xxx)
+                        else:
+                            # Create a new list for this key
+                            context['architecture'][bbb] = [xxx]                
+            logger.info("SSSS")
+            logger.info(context['architecture'])
             context['virus_total'] = None
             if settings.VT_ENABLED:
                 vt = VirusTotal.VirusTotal()

@@ -11,36 +11,37 @@ Code Analysis
       <thead>
         <tr>
           <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Severity</th>
-          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Issue</th>
-          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Standard</th>
-          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Files</th>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Issue</th>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Standard</th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Files</th>
           {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
         </tr>
       </thead>
       <tbody>
         {% if code_analysis and 'findings' in code_analysis %}
           {% for rule, details in code_analysis.findings.items %}
+          {% if details.metadata.severity == "high" or details.metadata.severity == "info"  %}
             <tr>
             
             <td class="col-12 col-xl-1 text-sm p-3">
               {% if details.metadata.severity == "high" %}
-              <span class="badge bg-danger">high</span>
+              <span class="badge bg-danger">High Risk</span>
               {% elif details.metadata.severity == "good" %}
               <span class="badge bg-success">secure</span>
               {% elif details.metadata.severity == "warning" %}
               <span class="badge bg-warning">warning</span>
               {% elif details.metadata.severity == "info" %}
-              <span class="badge bg-info">info</span>
+              <span class="badge bg-warning">Privacy</span>
               {% endif %}
             </td>
-            <td class="col-12 col-xl-2 text-sm p-3">
+            <td class="col-12 col-xl-4 text-sm p-3">
               {% if details.metadata|key:"ref" %}
                 <a href="{{details.metadata.ref}}" target="_blank" rel="noopener"> {{ details.metadata.description }}</a>
               {% else %}
                 {{ details.metadata.description }}
               {% endif %}
             </td>
-            <td class="col-12 col-xl-3 text-sm p-3 f">
+            <td class="col-12 col-xl-4 text-sm p-3 f">
               {% if average_cvss %}
               <strong>CVSS V2:</strong>
               {{ details.metadata.cvss }}
@@ -59,7 +60,7 @@ Code Analysis
             {% if details.metadata|key:"owasp-mobile" %}</br> <strong>OWASP Top 10: </strong>{{ details.metadata|key:"owasp-mobile" }}{% endif %}
             {% if details.metadata.masvs %}</br> <strong>OWASP MASVS: </strong>{{ details.metadata.masvs }}{% endif %}
             </td>
-            <td class="col-12 col-xl-6 text-sm p-3">
+            <td class="col-12 col-xl-3 text-sm p-3">
               {% if details.files|length < 4 %}
               {% for file_path, lines in details.files.items %}
                 <small>
@@ -82,6 +83,7 @@ Code Analysis
               {% endif %}
             </td>
             </tr>
+            {% endif %}
             {% endfor %}
         {% endif %}
       </tbody>

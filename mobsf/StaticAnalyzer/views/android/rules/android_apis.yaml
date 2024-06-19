@@ -3,19 +3,25 @@
   type: Regex
   pattern: System\.loadLibrary\(|System\.load\(
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Loading native code (shared library) is a security risk as it can be used to execute arbitrary code.
 - id: api_get_system_service
   message: Get System Service
   type: Regex
   pattern: getSystemService
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal
 - id: api_get_running_app_processes
   message: Get Running App Processes
   type: Regex
   pattern: getRunningAppProcesses\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_dexloading
   message: Dynamic Class and Dexloading
   type: RegexOr
@@ -29,7 +35,9 @@
     - DexClassLoader\(
     - InMemoryDexClassLoader\(
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Loading classes dynamically is a security risk as it can be used to execute arbitrary code.
 - id: api_java_reflection
   message: Java Reflection
   type: RegexOr
@@ -38,7 +46,9 @@
     - java\.lang\.reflect\.Field
     - Class\.forName
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Java Reflection is used to execute arbitrary code.
 - id: api_crypto
   message: Crypto
   type: RegexOr
@@ -52,6 +62,8 @@
     - Cipher\.getInstance\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_start_activity
   message: Starting Activity
   type: RegexOr
@@ -60,6 +72,8 @@
     - startActivityForResult\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_start_service
   message: Starting Service
   type: RegexOr
@@ -68,6 +82,8 @@
     - bindService\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_send_broadcast
   message: Sending Broadcast
   type: RegexOr
@@ -77,6 +93,8 @@
     - sendStickyBroadcast\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_local_file_io
   message: Local File I/O Operations
   type: RegexOr
@@ -96,6 +114,8 @@
     - import java\.util\.Scanner
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_ipc
   message: Inter Process Communication
   type: RegexOr
@@ -105,6 +125,8 @@
     - Intent
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_web
   message: 'HTTP Requests, Connections and Sessions'
   type: RegexOr
@@ -122,6 +144,8 @@
     - openConnection|connect|HttpRequest
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_dex_manipulate
   message: Load and Manipulate Dex Files
   type: RegexAnd
@@ -130,13 +154,17 @@
       dalvik\.system\.PathClassLoader|dalvik\.system\.DexFile|dalvik\.system\.DexPathList
     - loadDex|loadClass|DexClassLoader|loadDexFile
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Loading and manipulating dex files is a security risk as it can be used to execute arbitrary code.
 - id: api_content_provider
   message: Content Provider
   type: Regex
   pattern: android\.content\.ContentProvider
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_obfuscation
   message: Obfuscation
   type: RegexAnd
@@ -145,6 +173,8 @@
     - getObfuscator
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_os_command
   message: Execute OS Command
   type: RegexAnd
@@ -152,7 +182,9 @@
     - \.exec\(
     - getRuntime\(
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: This API is often used to exploit the OS vulnerabilities to gain previlleged access.
 - id: api_kill_process
   message: Kill Process
   type: RegexOr
@@ -161,6 +193,8 @@
     - \.killBackgroundProcesses\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_keystore
   message: Android Keystore
   type: RegexAnd
@@ -169,6 +203,8 @@
     - Keystore\.getInstance\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_tcp_server
   message: TCP Server Socket
   type: RegexAnd
@@ -177,6 +213,8 @@
     - net\.ServerSocket
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_tcp
   message: TCP Socket
   type: RegexAnd
@@ -185,6 +223,8 @@
     - net\.Socket
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_udp_datagram
   message: UDP Datagram Packet
   type: RegexAnd
@@ -193,6 +233,8 @@
     - net\.DatagramPacket
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_udp_datagram_socket
   message: UDP Datagram Socket
   type: RegexAnd
@@ -201,6 +243,8 @@
     - net\.DatagramSocket
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_webview
   message: WebView JavaScript Interface
   type: RegexAnd
@@ -210,6 +254,8 @@
     - android\.webkit
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_webview_get
   message: WebView GET Request
   type: RegexAnd
@@ -219,6 +265,8 @@
     - android\.webkit
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_webview_post
   message: WebView POST Request
   type: RegexAnd
@@ -228,6 +276,8 @@
     - android\.webkit
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_notifications
   message: Android Notifications
   type: RegexAnd
@@ -236,6 +286,8 @@
     - notify
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_cell
   message: Get Cell Information
   type: RegexAnd
@@ -244,6 +296,8 @@
     - getAllCellInfo
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_location
   message: Get Cell Location
   type: RegexAnd
@@ -252,6 +306,8 @@
     - getCellLocation
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_subscriber
   message: Get Subscriber ID
   type: RegexAnd
@@ -260,6 +316,8 @@
     - getSubscriberId
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_device
   message: 'Get Device ID, IMEI,MEID/ESN etc'
   type: RegexAnd
@@ -269,7 +327,9 @@
     - getImei\(
     - getMeid\(
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Device ID, IMEI, MEID/ESN are unique identifiers and Google is very sensitive about it.
 - id: api_get_soft
   message: 'Get Software Version, IMEI/SV etc'
   type: RegexAnd
@@ -278,6 +338,8 @@
     - getDeviceSoftwareVersion
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_sim_serial
   message: Get SIM Serial Number
   type: RegexAnd
@@ -285,7 +347,9 @@
     - telephony\.TelephonyManager
     - getSimSerialNumber
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: SIM Serial Number is a unique identifier and Google is very sensitive about it.  
 - id: api_get_sim_provider
   message: Get SIM Provider Details
   type: RegexAnd
@@ -294,6 +358,8 @@
     - getSimOperator
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_sim_operator
   message: Get SIM Operator Name
   type: RegexAnd
@@ -301,7 +367,9 @@
     - telephony\.TelephonyManager
     - getSimOperatorName
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: SIM Operator is often used in cloaking behaviors.
 - id: api_get_phone
   message: Get Phone Number
   type: RegexAnd
@@ -310,6 +378,8 @@
     - getLine1Number
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_sms_call
   message: 'Query Database of SMS, Contacts etc'
   type: RegexAnd
@@ -317,7 +387,9 @@
     - content\.ContentResolver
     - query
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Querying SMS, Contacts etc. is a privacy concern.
 - id: api_hide_app_icon
   message: Hide application icon
   type: RegexAnd
@@ -325,7 +397,9 @@
     - \.setComponentEnabledSetting\(
     - COMPONENT_ENABLED_STATE_DISABLED
   input_case: exact
-  severity: info
+  severity: error
+  metadata:
+    remark: Hiding the application icon is a security risk as it can be used to hide the application from the user and make the app undeletable.
 - id: api_send_sms
   message: Send SMS
   type: RegexAndOr
@@ -336,6 +410,8 @@
       - vnd\.android-dir\/mms-sms
   input_case: exact
   severity: info
+  metadata:
+    remark: Sending SMS is a privacy concern.
 - id: api_url
   message: URL Connection to file/http/https/ftp/jar
   type: RegexAndOr
@@ -346,6 +422,8 @@
       - openStream
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_jar_url
   message: JAR URL Connection
   type: RegexAndOr
@@ -355,6 +433,8 @@
       - 'jar:'
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal
 - id: api_https_connection
   message: HTTPS Connection
   type: RegexAndOr
@@ -364,6 +444,8 @@
       - connect
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_clipboard
   message: Set or Read Clipboard data
   type: RegexAndOr
@@ -373,6 +455,8 @@
       - ClipboardManager
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_base64_encode
   message: Base64 Encode
   type: RegexAndOr
@@ -382,6 +466,8 @@
       - \.encode
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_base64_decode
   message: Base64 Decode
   type: RegexAndOr
@@ -391,6 +477,8 @@
       - \.decode
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_message_digest
   message: Message Digest
   type: RegexAndOr
@@ -400,6 +488,8 @@
       - MessageDigest
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_gps
   message: GPS Location
   type: RegexAndOr
@@ -411,6 +501,8 @@
       - getLongitude\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_installed
   message: Get Installed Applications
   type: RegexAndOr
@@ -421,6 +513,8 @@
       - getInstalledPackages\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_wifi
   message: Get WiFi Details
   type: RegexAndOr
@@ -434,6 +528,8 @@
       - getMacAddress\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_get_network
   message: Get Network Interface information
   type: RegexAndOr
@@ -453,21 +549,29 @@
       - getAdvertisingId\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_certificate_handling
   message: Certificate Handling
   type: Regex
   pattern: \.SSLSocketFactory
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_javascript_interface_methods
   message: JavaScript Interface Methods
   type: Regex
   pattern: \@JavascriptInterface|\@android\.webkit\.JavascriptInterface
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  
 - id: api_passkeys
   message: Passkeys
   type: Regex
   pattern: CredentialManager\.create\(|GetPublicKeyCredentialOption\(|\.getAuthenticationResponseJson\(|CreatePublicKeyCredentialRequest\(
   input_case: exact
   severity: info
+  metadata:
+    remark: Normal  

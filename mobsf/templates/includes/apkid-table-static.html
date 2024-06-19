@@ -1,0 +1,74 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Obfuscator Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dex</th>
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Detections</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if apkid and app_type not in 'jar,aar'%}
+            {% for file, details in apkid.items %}
+            <tr>
+            <td class="col-12 col-xl-2 text-sm p-3">
+                {{file}}
+            </td>            
+            <td class="col-12 col-xl-6 text-sm p-3 apkid">
+              <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>FINDINGS</th>
+                        <th>DETAILS</th>
+                    </tr>
+                </thead>
+              <tbody>
+              {% for detail, idens in details.items %}
+              <tr>
+                <td>
+                 {% if detail == "anti_vm" %}
+                 <span class="badge bg-warning">Anti-VM Code</span>
+                 {% elif detail == "anti_disassembly" %}
+                 <span class="badge bg-warning">Anti Disassembly Code</span>
+                 {% elif detail == "anti_debug" %}
+                 <span class="badge bg-warning">Anti Debug Code</span>
+                 {% elif detail == "compiler" %}
+                 <span class="badge bg-info">Compiler</span>
+                 {% elif detail == "abnormal" %}
+                 <span class="badge bg-warning">Abnormal Code</span>
+                 {% elif detail == "obfuscator" %}
+                 <span class="badge bg-warning">Obfuscator</span>
+                 {% elif detail == "protector" %}
+                 <span class="badge bg-info">Protector</span>
+                 {% elif detail == "packer" %}
+                 <span class="badge bg-danger">Packer Found</span>
+                 {% elif detail == "dropper" %}
+                 <span class="badge bg-danger">Dropper Found</span>
+                 {% elif detail == "manipulator" %}
+                 <span class="badge bg-warning">Manipulator Found</span>
+                 {% else %}
+                 <span class="badge bg-info">{{detail}}</span>
+                 {% endif %}
+              </td>
+                <td> {% for idn in idens %} {{ idn }}<br/> {% endfor %}</td>
+              </tr>
+              {% endfor %}
+             </tbody>
+              </table>
+            </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

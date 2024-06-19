@@ -109,12 +109,17 @@ APPX_MIME = [
     'application/x-zip-compressed',
 ]
 # Supported File Extensions
+# ANDROID_EXTS = (
+#     'apk', 'xapk', 'apks', 'zip',
+#     'aab', 'so', 'jar', 'aar',
+# )
+# IOS_EXTS = ('ipa', 'dylib', 'a')
+# WINDOWS_EXTS = ('appx',)
 ANDROID_EXTS = (
-    'apk', 'xapk', 'apks', 'zip',
-    'aab', 'so', 'jar', 'aar',
+    'apk',
 )
-IOS_EXTS = ('ipa', 'dylib', 'a')
-WINDOWS_EXTS = ('appx',)
+IOS_EXTS = ('apk',)
+WINDOWS_EXTS = ('apk',)
 # REST API only mode
 # Set MOBSF_API_ONLY to 1 to enable REST API only mode
 # In this mode, web UI related urls are disabled.
@@ -482,7 +487,7 @@ else:
     # Get AppMonsta API from https://appmonsta.com/dashboard/get_api_key/
     APPMONSTA_API = os.getenv('MOBSF_APPMONSTA_API', '')
     # ----------VirusTotal--------------------------
-    VT_ENABLED = bool(os.getenv('MOBSF_VT_ENABLED', 'true'))
+    VT_ENABLED = bool(os.getenv('MOBSF_VT_ENABLED', 'false'))
     VT_API_KEY = os.getenv('MOBSF_VT_API_KEY', '0448dadb30235d8b6c72260909fe4ba32b23ef8c359808bad7bd831f0a1ce323')
     VT_UPLOAD = bool(os.getenv('MOBSF_VT_UPLOAD', 'true'))
     # Before setting VT_ENABLED to True,

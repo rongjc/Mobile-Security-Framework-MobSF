@@ -1,0 +1,68 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Native Library Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Files</th>
+          {% comment %} {% comment %} <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">API</th> {% endcomment %}
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">armeabi-v7a</th> 
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">arm64-v8a</th> 
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">x86</th> 
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">x86_64</th> 
+          {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if not binary_analysis %}
+        No Native Library Found.
+        {% endif %}
+        {% for name,list in architecture.items %}
+        <tr>
+        <td class="col-12 col-xl-2 text-sm p-3">
+          {{name}}    
+        </td>
+        
+        <td class="col-12 col-xl-1 text-sm p-3">
+          {% if 'armeabi-v7a' in list %}
+          <span class="badge bg-success">Yes</span>
+          {% else %}
+          <span class="badge bg-danger">No</span>
+          {% endif %}          
+        </td>
+        <td class="col-12 col-xl-1 text-sm p-3">
+          {% if 'arm64-v8a' in list %}
+          <span class="badge bg-success">Yes</span>
+          {% else %}
+          <span class="badge bg-danger">No</span>
+          {% endif %}
+        </td>
+        <td class="col-12 col-xl-1 text-sm p-3">
+          {% if 'x86' in list %}
+          <span class="badge bg-success">Yes</span>
+          {% else %}
+          <span class="badge bg-danger">No</span>
+          {% endif %}
+        </td>
+        <td class="col-12 col-xl-1 text-sm p-3">
+          {% if 'x86_64' in list %}
+          <span class="badge bg-success">Yes</span>
+          {% else %}
+          <span class="badge bg-danger">No</span>
+          {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

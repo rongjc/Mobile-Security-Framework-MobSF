@@ -337,6 +337,89 @@ def is_secret_key(inp):
     not_str = any(i in inp for i in not_string)
     return any(i in inp for i in iden) and not not_str
 
+def contains_linked_pinyin_substrings(s):
+    """
+    Checks if the string contains a sequence of two or more Hanyu Pinyin syllables that are linked,
+    where "linked" means they can be directly adjacent or separated by a space, underscore, or dash.
+    """
+    # Simplified and optimized regex pattern for linked Pinyin syllables
+    pinyin_initials = "(?:b|p|m|f|d|t|n|l|g|k|h|j|q|x|zh|ch|sh|r|z|c|s)?"
+    pinyin_finals = "(?:a|o|e|i|u|ü|ai|ei|ui|ao|ou|iu|ie|üe|er|an|en|in|un|ün|ang|eng|ing|ong)"
+    pinyin_syllable = f"{pinyin_initials}{pinyin_finals}"
+
+    # Including spaces, underscores, or dashes as possible delimiters
+    delimiter = "[ _-]*"  # * allows for multiple or no delimiters
+
+    # Regex pattern to match at least two linked Pinyin syllables with specified delimiters
+    pinyin_linked_pattern = re.compile(f"({pinyin_syllable}){delimiter}({pinyin_syllable})", re.IGNORECASE)
+
+    # Search for the pattern anywhere in the string
+    return pinyin_linked_pattern.search(s) is not None
+
+def generate_valid_pinyin_combinations():
+    initials = ['b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'zh', 'ch', 'sh', 'r', 'z', 'c', 's', '']
+    finals = ['a', 'o', 'e', 'i', 'u', 'ü', 'ai', 'ei', 'ui', 'ao', 'ou', 'iu', 'ie', 'üe', 'er', 'an', 'en', 'in', 'un', 'ün', 'ang', 'eng', 'ing', 'ong']
+
+    invalid_combinations = {
+        '': ['i', 'ü', 'in', 'ün'],
+        'j': ['a', 'o', 'e', 'er'],
+        'q': ['a', 'o', 'e', 'er'],
+        'x': ['a', 'o', 'e', 'er'],
+        'zh': ['ü'],
+        'ch': ['ü'],
+        'sh': ['ü'],
+        'r': ['ü'],
+        'z': ['ü'],
+        'c': ['ü'],
+        's': ['ü']
+    }
+
+    valid_combinations = []
+    for initial in initials:
+        for final in finals:
+            if final in invalid_combinations.get(initial, []):
+                continue
+            valid_combinations.append(f"{initial}{final}")
+
+    return set(valid_combinations)
+
+def contains_at_least_two_pinyin(text, pinyin_syllables):
+    """
+    Check if the text contains at least two valid Pinyin syllables.
+    """
+    text = text.lower()  # Normalize text to lowercase for case-insensitive matching
+    words = re.split(r'[ _-]+', text)  # Split the text on spaces, underscores, or dashes
+
+    pinyin_count = sum(1 for word in words if word in pinyin_syllables)
+    return pinyin_count >= 2
+
+def contains_sufficient_pinyin_percentage(text, pinyin_syllables, percentage_threshold=60):
+    """
+    Check if the text contains a sufficient percentage of Pinyin syllables.
+    The percentage of words that must be Pinyin is defined by 'percentage_threshold'.
+    """
+    if len(text) < 8:  
+        return False 
+    text = text.lower()  # Normalize text to lowercase for case-insensitive matching
+    words = re.split(r'[ _-]+', text)  # Split the text on spaces, underscores, or dashes
+    total_words = len(words)
+    pinyin_words = sum(1 for word in words if word in pinyin_syllables)
+
+    # Calculate the percentage of Pinyin words
+    if total_words < 3:
+        return False  # Prevent division by zero if there are no words
+    pinyin_percentage = (pinyin_words / total_words) * 100
+
+    return pinyin_percentage >= percentage_threshold
+
+def select_pinyin_strings(strings):
+    """
+    Filters a list of strings, returning those that contain sequences of two or more linked Hanyu Pinyin syllables,
+    where linked can include being separated by spaces, underscores, or dashes.
+    Optimized for efficient evaluation.
+    """
+    valid_pinyin_syllables = generate_valid_pinyin_combinations()
+    return [s for s in strings if contains_sufficient_pinyin_percentage(s, valid_pinyin_syllables)]
 
 def strings_and_entropies(src, exts):
     """Get Strings and Entropies."""
@@ -344,6 +427,7 @@ def strings_and_entropies(src, exts):
     data = {
         'strings': set(),
         'secrets': set(),
+        'pinyin': set(),
     }
     try:
         if not src.exists():
@@ -369,6 +453,7 @@ def strings_and_entropies(src, exts):
                 data['strings'].add(string)
         if data['strings']:
             data['secrets'] = get_entropies(data['strings'])
+            data['pinyin'] = select_pinyin_strings(data['strings'])
     except Exception:
         logger.exception('Extracting Data from Code')
     return data

@@ -3,8 +3,8 @@
  {% block sidebar_option %}
       sidebar-collapse
 {% endblock %}
-{% block extra_css %}
-<!-- <link href="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet"> -->
+{% block stylesheets %}
+<link href="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet">
 
 <style>
 #app_icon{
@@ -77,21 +77,23 @@
                         <td class=" text-sm">
                           {{ e.PACKAGE_NAME }}
                         </td>
-                        <td class="text-sm">                                
-                              {% if e.PACKAGE_NAME or e.APP_NAME %}
+                        <td class="text-sm">                                                              
                               <span class="text-xs font-weight-bold"> 
                               {{ e.TIMESTAMP }}
                               </span>
-                              {% else %}
-                              <div class="text-xs font-weight-bold ">
-                                  <i class="material-icons text-sm my-auto me-1">schedule</i>
-                                  <p class="mb-0 text-sm"> Scanning </p>
-                                </div>
-                              {% endif %}
                               
                         </td>
                         <td class="align-middle">
+                          {% if e.PACKAGE_NAME or e.APP_NAME %}
                           <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View Report</a>
+                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete Scan</a>
+
+                          {% else %}
+                          <div class="text-xs font-weight-bold ">
+                              <i class="material-icons text-sm my-auto me-1">schedule</i>
+                              <p class="mb-0 text-sm"> Scanning </p>
+                            </div>
+                          {% endif %}
                         </td>
                       </tr>
                       {% endfor %}
@@ -102,7 +104,12 @@
             </div>
   </div>
 {% endblock %}
-{% block extra_scripts %}
+{% block javascripts %}
+
+<!-- jQuery -->
+<script src="{% static "adminlte/plugins/jquery.min.js" %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static "adminlte/plugins/jquery-ui.min.js" %}"></script>
 <script src="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.js" %}"></script>
 <script>
     // Diff functions
@@ -122,11 +129,8 @@
 
 
     function enable_diff_button(){
-        $(".diffButton").on('click', function(e){
-            e.stopPropagation();
-            diff_select($(this));
-        });
-    }
+
+    }delete_scan
 
     function disable_diff_button() {
         $('.diffButton').off('click');
@@ -189,11 +193,43 @@
             }
         })
     }
-
+    function delete_scan(item) {
+      var md5_hash = item.id;
+      console.log(md5_hash)
+      if (confirm("Are you sure to permanently remove the scan results?") == true) {
+          $.ajax({
+                  url: '{% url "delete_scan" %}',
+                      type : 'POST',
+                  dataType: 'json',
+                      data : {
+                              csrfmiddlewaretoken: '{{ csrf_token }}',
+                              md5: md5_hash,
+                              },
+                          success : function(json) {
+                              if (json.deleted==='yes'){
+                                      alert("Delete success!");
+                                      location.reload();
+                                  
+                              }
+                              else {                                
+                                alert("Delete Failed!");
+                              }
+                          },
+                          error : function(xhr,errmsg,err) {
+                            alert("Delete Failed!");
+                          }
+              });
+             
+        
+      } else {
+        
+      }
+    }
     function delete_scan(item){
+      
       Swal.fire({
       title: 'Are you sure?',
-      text: "This will permanently remove the scan results from MobSF",
+      text: "This will permanently remove the scan results.",
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -209,7 +245,7 @@
                     dataType: 'json',
                         data : {
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                    md5hash,
+                                md5: md5_hash,
                                 },
                             success : function(json) {
                                 if (json.deleted==='yes'){

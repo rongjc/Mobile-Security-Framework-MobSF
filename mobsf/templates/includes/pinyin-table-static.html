@@ -1,0 +1,8 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Possible Pinyin Strings
+{% endblock %}
+{% block card-body %}
+{% include 'base/list.html' with list=strings.strings_code_pinyin type="strings" limit=100 %}
+{% endblock %}

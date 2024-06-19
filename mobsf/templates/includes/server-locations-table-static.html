@@ -1,0 +1,41 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Server Location Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <p></br>This app may communicate with the following OFAC sanctioned list of countries.</p>
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Domain</th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Country/Region</th>
+          {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for domain, details in domains.items %}
+        {% if details|key:"ofac" == True %}
+        <tr>
+        
+        <td class="col-12 col-xl-1 text-sm p-3">{{domain}}</td>
+        {% comment %} <td class="col-12 col-xl-3 text-sm p-3 f">{{ details }}</td> {% endcomment %}
+        <td class="col-12 col-xl-6 text-sm p-3">
+            <strong>IP: </strong>{{details|key:"geolocation"|key:"ip"}}  <br/>
+            <strong>Country: </strong>{{details|key:"geolocation"|key:"country_long"}} <br/>
+            <strong>Region: </strong>{{details|key:"geolocation"|key:"region"}} <br/>
+            <strong>City: </strong>{{details|key:"geolocation"|key:"city"}} <br/>
+        </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

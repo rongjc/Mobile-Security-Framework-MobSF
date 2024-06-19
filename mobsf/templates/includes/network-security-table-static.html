@@ -11,14 +11,15 @@ Network Security Analysis
       <thead>
         <tr>
           <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
-          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
-          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
+          <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+          <th class="col-12 col-xl-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
           {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
         </tr>
       </thead>
       <tbody>
         {% if network_security and 'network_findings' in network_security %}
         {% for item in network_security.network_findings %}
+        {% if item.severity == "high" or item.severity == "warning"  %}
         <tr>
         
         <td class="col-12 col-xl-1 text-sm p-3">                          
@@ -32,16 +33,15 @@ Network Security Analysis
             <span class="badge bg-warning">warning</span>
           {% endif %}
         </td>
-        {% comment %} <td class="col-12 col-xl-3 text-sm p-3 f">{{ details }}</td> {% endcomment %}
-        <td class="col-12 col-xl-6 text-sm p-3">
+        
+        <td class="col-12 col-xl-2 text-sm p-3">
           {% for url in item.scope %}
             {{ url }}</br>
           {% endfor %}
         </td>
-        <td class="col-12 col-xl-2 text-sm p-3">
-            {{item.description }}
-        </td>
-        </tr>
+        <td class="col-12 col-xl-8 text-sm p-3">{{item.description }}</td>  
+      </tr>
+        {% endif %}
         {% endfor %}
         {% endif %}
       </tbody>

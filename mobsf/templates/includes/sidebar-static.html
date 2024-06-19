@@ -10,6 +10,14 @@
 <nav class="mt-2">
   <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
     <li class="nav-item">
+      <a href="{% url 'home' %}" class="nav-link">
+        <i class="nav-icon fas fa-home"></i>
+        <p>
+          Home
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="#information" class="nav-link">
         <i class="nav-icon fas fa-info-circle"></i>
         <p>
@@ -17,23 +25,7 @@
         </p>
       </a>
     </li>
-     <li class="nav-item">
-      <a href="#scan_options" class="nav-link">
-        <i class="nav-icon fas fa-cog"></i>
-        <p>
-          Scan Options
-        </p>
-      </a>
-    </li>
     {% if app_type not in 'so' %}
-    <li class="nav-item">
-      <a href="#certificate" class="nav-link">
-        <i class="nav-icon fas fa-certificate"></i>
-        <p>
-          Signer Certificate
-        </p>
-      </a>
-    </li>
     <li class="nav-item">
       <a href="#permissions" class="nav-link">
         <i class="nav-icon fas fa-list"></i>
@@ -51,269 +43,52 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="#browsable" class="nav-link">
-        <i class="nav-icon fas fa-clone"></i>
+      <a href="#network_security" class="nav-link">
+        <i class="nav-icon fas fa-lock"></i>
         <p>
-          Browsable Activities
+          Network Security
         </p>
       </a>
     </li>
-    {% endif %}
-    <li class="nav-item has-treeview">
-      <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-shield-alt"></i>
-        <p>
-          Security Analysis
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        {% if app_type not in 'so' %}
-        <li class="nav-item">
-          <a href="#network_security" class="nav-link">
-            <i class="nav-icon fas fa-lock"></i>
-            <p>
-              Network Security
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#certificate_analysis" class="nav-link">
-            <i class="nav-icon fa fa-id-card"></i>
-            <p>
-              Certificate Analysis
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#manifest" class="nav-link">
-            <i class="fas fa-search nav-icon"></i>
-            <p>Manifest Analysis</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#code_analysis" class="nav-link">
-            <i class="fa fa-code nav-icon"></i>
-            <p>Code Analysis</p>
-          </a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a href="#binary_analysis" class="nav-link">
-            <i class="nav-icon fas fa-flag"></i>
-            <p>Binary Analysis</p>
-          </a>
-        </li>
-        {% if app_type not in 'so' %}
-        <li class="nav-item">
-          <a href="#niap_analysis" class="nav-link">
-            <i class="fa fa-id-badge nav-icon"></i>
-            <p> NIAP Analysis</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#file_analysis" class="nav-link">
-            <i class="fa fa-file nav-icon"></i>
-            <p>File Analysis</p>
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-    </li>
-    <li class="nav-item has-treeview">
-      <a href="#" class="nav-link">
-        <i class="nav-icon fa fa-bug"></i>
-        <p>
-          Malware Analysis
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        {% if app_type not in 'so' %}
-        <li class="nav-item">
-          <a href="#apkid" class="nav-link">
-            <i class="fas fa-fingerprint nav-icon"></i>
-            <p>APKiD Analysis</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#quark" class="nav-link">
-            <i class="fab fa-quora nav-icon"></i>
-            <p>Quark Analysis</p>
-          </a>
-        </li>
-        {% endif %}
-         {% if virus_total %}
-        <li class="nav-item">
-          <a href="#virus_total" class="nav-link">
-            <i class="fas fa-spider nav-icon"></i>
-            <p>VirusTotal</p>
-          </a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a href="#malware_permissions" class="nav-link">
-            <i class="fa fa-braille nav-icon"></i>
-            <p>Abused Permissions</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#serverlocations" class="nav-link">
-            <i class="fas fa-globe-asia nav-icon"></i>
-            <p>Server Locations</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#malware_check" class="nav-link">
-            <i class="fab fa-searchengin nav-icon"></i>
-            <p>Domain Malware Check</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-     <li class="nav-item has-treeview">
-      <a href="#" class="nav-link">
-        <i class="nav-icon fa fa-plus"></i>
-        <p>
-          Reconnaissance
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="#urls" class="nav-link">
-            <i class="fas fa-globe nav-icon"></i>
-            <p>URLs</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#firebase" class="nav-link">
-            <i class="fas fa-database nav-icon"></i>
-            <p>Firebase DB</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#emails" class="nav-link">
-            <i class="fas fa-envelope nav-icon"></i>
-            <p>Emails</p>
-          </a>
-        </li>
-        {% if app_type not in 'so' %}
-        <li class="nav-item">
-          <a href="#trackers" class="nav-link">
-            <i class="fas fa-user-secret nav-icon"></i>
-            <p>Trackers</p>
-          </a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a href="#secrets" class="nav-link">
-            <i class="fas fa-key nav-icon"></i>
-            <p>Hardcoded Secrets</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#strings" class="nav-link">
-            <i class="fas fa-font nav-icon"></i>
-            <p>Strings</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-    {% if app_type in 'so' %}
     <li class="nav-item">
-      <a href="#symbols" class="nav-link">
-        <i class="fa fa-th nav-icon"></i>
-          <p>Symbols</p>
+      <a href="#code_analysis" class="nav-link">
+        <i class="fa fa-code nav-icon"></i>
+        <p>Code Analysis</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#certificate_analysis" class="nav-link">
+        <i class="nav-icon fa fa-id-card"></i>
+        <p>
+          Certificate Analysis
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#binary_analysis" class="nav-link">
+        <i class="nav-icon fas fa-flag"></i>
+        <p>Binary Analysis</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#apkid" class="nav-link">
+        <i class="fas fa-fingerprint nav-icon"></i>
+        <p>Compiler Analysis</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#serverlocations" class="nav-link">
+        <i class="fas fa-globe-asia nav-icon"></i>
+        <p>Server Locations</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#malware_check" class="nav-link">
+        <i class="fab fa-searchengin nav-icon"></i>
+        <p>Domain Malware Check</p>
       </a>
     </li>
     {% endif %}
-    {% if app_type not in 'so' %}
-     <li class="nav-item has-treeview">
-      <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-th-large"></i>
-        <p>
-          Components
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="#activities" class="nav-link">
-            <i class="fa fa-language nav-icon"></i>
-            <p>Activities</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#services" class="nav-link">
-            <i class="fa fa-cogs nav-icon"></i>
-            <p>Services</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#receivers" class="nav-link">
-            <i class="fa fa-assistive-listening-systems nav-icon"></i>
-            <p>Receivers</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#providers" class="nav-link">
-            <i class="fa fa-database nav-icon"></i>
-            <p>Providers</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#libraries" class="nav-link">
-            <i class="fab fa-buffer nav-icon"></i>
-            <p>Libraries</p>
-          </a>
-        </li>
-         <li class="nav-item">
-          <a href="#files" class="nav-link">
-            <i class="far fa-copy nav-icon"></i>
-            <p>Files</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-    {% endif %}
-      <li class="nav-item">
-        <a href="{% url "pdf" checksum=md5 %}" class="nav-link">
-        <i class="nav-icon fas fa-file-pdf"></i>
-        <p>
-          PDF Report
-        </p>
-       </a>
-      </li>
-      <li class="nav-item">
-        <a href="javascript:window.print()" class="nav-link">
-        <i class="nav-icon fa fa-print"></i>
-        <p>
-          Print Report
-        </p>
-       </a>
-      </li>
-      {% if dynamic_analysis_done %}
-      <li class="nav-item">
-        <a href="{% url "dynamic_report" checksum=md5 %}" class="nav-link">
-        <i class="nav-icon fas fa-file-alt"></i>
-        <p>
-          Dynamic Analysis Report
-        </p>
-       </a>
-      </li>
-      {% else %}
-        {% if app_type not in 'jar,aar,so' %}
-      <li class="nav-item">
-        <a onclick="dynamic_loader()" href="{% url "dynamic_analyzer" checksum=md5 %}" class="nav-link">
-        <i class="nav-icon fa fa-play-circle"></i>
-        <p>
-          Start Dynamic Analysis
-        </p>
-       </a>
-      </li>
-        {% endif %}
-      {% endif %}
   </ul>
 </nav>
 <!-- /.sidebar-menu -->

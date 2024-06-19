@@ -1,28 +1,26 @@
-{% extends "layouts/base-top-nav.html" %}
+{% extends "base/base_layout.html" %}
 {% load static %}
 {% block sidebar_option %}
 sidebar-collapse
 {% endblock %}
-{% block stylesheets %}
+{% block extra_css %}
 <link href="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<div class="container mt-5">
+<div class="content-wrapper">
+   <div class="content-header">
+   </div>
    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-lg-6 col-7">
-            <div class="card  card-plain">
-               <div class="card-header">
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="card">
+               <div class="card-body">
                   <div class="h-100 d-flex align-items-center justify-content-center">
                      <div class="">
-                        <div class="card-header pb-0">
-                            <div class="row">
-                              <div class="col-lg-6 col-7">
-                                <h6>User Management</h6>
-                              </div>
-                            </div>
+                        <div class="login-logo">
+                           <a href="">User Management</a>  <a href="{% url 'create_user' %}" id="add_user" class="btn btn-success" role="button"><i class="fa fa-user"></i> Add User</a>
                         </div>
-                        <div class="">
+                        <div class="card">
                            <div class="card-body login-card-body">
                             {% if not users %}
                             <h3>No Users Available</h3>
@@ -30,7 +28,8 @@ sidebar-collapse
                             <div class="table-responsive">
                                 <table class="table table-responsive-md">
                                     <thead>
-                                        <tr>                        
+                                        <tr>
+                                            <th><strong>#</strong></th>
                                             <th><strong>Username</strong></th>
                                             <th><strong>Email</strong></th>
                                             <th><strong>Role</strong></th>
@@ -40,6 +39,11 @@ sidebar-collapse
                                     <tbody>
                                         {% for user in users %}
                                                 <tr>
+                                                    <td>
+                                                        <div class="profile-photo">
+                                                            <img src="https://www.gravatar.com/avatar/{{ user.email | md5}}" width="30" class="img-fluid rounded-circle" alt="">
+                                                        </div>
+                                                     </td>
                                                     <td>{{user.username}}</td>
                                                     <td>{{user.email}}</td>
                                                     <td> {% if user.is_staff %}Admin{% else %} {{user.groups.all.0}}  {% endif %}</td>
@@ -48,13 +52,6 @@ sidebar-collapse
                                                       {% endif %}</td>
                                                 </tr>
                                         {% endfor %}
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td> <a href="{% url 'create_user' %}" id="add_user" class="btn btn-success" role="button"><i class="fa fa-user"></i> Add User</a></td>
-                                        </tr>
-                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -70,7 +67,7 @@ sidebar-collapse
    </div>
 </div>
 {% endblock %}
-{% block javascripts %}
+{% block extra_scripts %}
 <script src="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.js" %}"></script>
 <script>
     function delete_user(item){

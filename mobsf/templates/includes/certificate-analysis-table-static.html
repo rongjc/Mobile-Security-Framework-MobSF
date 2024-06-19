@@ -12,13 +12,14 @@ Certificate Analysis
         <tr>
           <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
           <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
-          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
+          <th class="col-12 col-xl-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
           {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
         </tr>
       </thead>
       <tbody>
         {% if certificate_analysis and 'certificate_findings' in certificate_analysis %}
             {% for find in certificate_analysis.certificate_findings %}
+            {% if find.0 == "high" or find.0 == "warning"  %}
             <tr>
             
             <td class="col-12 col-xl-1 text-sm p-3">
@@ -33,9 +34,10 @@ Certificate Analysis
             {% endif %}
             </td>
             {% comment %} <td class="col-12 col-xl-3 text-sm p-3 f">{{ details }}</td> {% endcomment %}
-            <td class="col-12 col-xl-6 text-sm p-3">{{ find.2 }}</td>
-            <td class="col-12 col-xl-2 text-sm p-3">{{ find.1 }}</td>
+            <td class="col-12 col-xl-3 text-sm p-3">{{ find.2 }}</td>
+            <td class="col-12 col-xl-8 text-sm p-3">{{ find.1 }}</td>
             </tr>
+            {% endif %}
             {% endfor %}
         {% endif %}
       </tbody>

@@ -18,20 +18,21 @@ Permission Analysis
       </thead>
       <tbody>
         {% for perm,desc in permissions.items %}
+        {% if desc.status == 'dangerous' %}
         <tr>
         
         <td class="col-12 col-xl-1 text-sm p-3">
-        {% if desc.status == 'dangerous' %}
-          <span class="badge bg-danger">dangerous</span>
-        {% elif desc.status == 'normal' %}
+        
+          <span class="badge bg-danger">High Risk</span>
+        {% comment %} {% elif desc.status == 'normal' %}
           <span class="badge bg-info">normal</span>
         {% elif desc.status == 'signatureOrSystem' %}
           <span class="badge bg-warning">SignatureOrSystem</span>
         {% elif desc.status == 'signature' %}
           <span class="badge bg-success">signature</span>
         {% elif desc.status == 'unknown' %}
-          <span class="badge bg-secondary">unknown</span>
-        {% endif %}
+          <span class="badge bg-secondary">unknown</span> {% endcomment %}
+        
         </td>
         <td class="col-12 col-xl-3 text-sm p-3 f">{{ perm }}</td>
         <td class="col-12 col-xl-6 text-sm p-3">{{ desc.description }}</td>
@@ -53,6 +54,7 @@ Permission Analysis
                 {% endif %}
               {% endfor %}
             </div>
+          {% endif %}
           {% endif %}
         </td>
         </tr>
