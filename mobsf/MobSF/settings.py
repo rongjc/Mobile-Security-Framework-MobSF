@@ -118,7 +118,7 @@ APPX_MIME = [
 ANDROID_EXTS = (
     'apk',
 )
-IOS_EXTS = ('apk',)
+IOS_EXTS = ('ipa',)
 WINDOWS_EXTS = ('apk',)
 # REST API only mode
 # Set MOBSF_API_ONLY to 1 to enable REST API only mode
