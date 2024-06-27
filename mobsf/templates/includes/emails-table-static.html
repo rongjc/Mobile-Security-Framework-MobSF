@@ -25,7 +25,11 @@ Email found
            {% endfor %}
             </td>
            <td class="col-12 col-xl-1 text-sm p-3">
+            {% if app_type in 'apk' %}
               <a href="{% url "view_source" %}?file={{email_dict|key:"path"}}&amp;md5={{ md5}}&amp;type={{app_type}}">{{email_dict|key:"path"}}</a>
+            {% else %}
+              <a href="{% url "view_file_ios" %}?file={{email_dict|key:"path"}}&amp;md5={{ md5}}&amp;type={{app_type}}">{{email_dict|key:"path"}}</a>
+            {% endif %}              
            </td>
         </tr>
       {% endfor %} 

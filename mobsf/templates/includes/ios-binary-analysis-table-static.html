@@ -1,0 +1,78 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+IPA - Binary Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Severity</th>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Protection</th>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
+          <th class="col-12 col-xl-6 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
+          {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if not macho_analysis %}
+          Binary Analysis Failed.
+        {% else %}
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.nx.severity == 'high' %}danger{% elif macho_analysis.nx.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.nx.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">NX</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.nx.has_nx}}</td>
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.nx.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.pie.severity == 'high' %}danger{% elif macho_analysis.pie.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.pie.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">PIE</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.pie.has_pie}}</td>           
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.pie.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.stack_canary.severity == 'high' %}danger{% elif macho_analysis.stack_canary.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.stack_canary.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">STACK CANARY</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.stack_canary.has_canary}}</td>
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.stack_canary.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.arc.severity == 'high' %}danger{% elif macho_analysis.arc.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.arc.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">ARC</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.arc.has_arc}}</td>            
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.arc.description}}</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-{% if macho_analysis.rpath.severity == 'high' %}danger{% elif macho_analysis.rpath.severity == 'warning' %}warning{% else %}info{% endif %}'">{{macho_analysis.rpath.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">RPATH</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.rpath.has_rpath}}</td>            
+            <td>{{macho_analysis.rpath.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.code_signature.severity == 'high' %}danger{% elif macho_analysis.code_signature.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.code_signature.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">CODE SIGNATURE</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.code_signature.has_code_signature}}</td>            
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.code_signature.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.encrypted.severity == 'high' %}danger{% elif macho_analysis.encrypted.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.encrypted.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">ENCRYPTED</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.encrypted.is_encrypted}}</td>          
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.encrypted.description}}</td>
+          </tr>
+          <tr>
+            <td class="col-12 col-xl-1 text-sm p-3"><span class="badge bg-{% if macho_analysis.symbol.severity == 'high' %}danger{% elif macho_analysis.symbol.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.symbol.severity}}</span></td>
+            <td class="col-12 col-xl-1 text-sm p-3">SYMBOLS STRIPPED</td>
+            <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.symbol.is_stripped}}</td>            
+            <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.symbol.description}}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

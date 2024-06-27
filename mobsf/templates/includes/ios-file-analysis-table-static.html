@@ -1,0 +1,56 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+App Transport Security (ATS)
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Issue</th>
+          <th class="col-12 col-xl-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Files</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in file_analysis %}
+        <tr>        
+          <td class="col-12 col-xl-2 text-sm p-3">{{item.issue }}</td>
+          <td class="col-12 col-xl-8 text-sm p-3">
+            {% if item.files|length < 4 %}
+            {% for file in item.files %}
+             
+               {% if file.type %}
+                      <a href="{% url 'view_file_ios' %}?file={{file.file_path}}&amp;type={{file.type}}&amp;md5={{file.hash}}">{{ file.file_path }}</a>
+                      {% else %}
+                      {{ file.file_path }}
+                      {% endif %}
+                  </br>
+                  {% endfor %}
+                {% else %}
+                  <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsefiles{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsefiles{{forloop.counter}}">
+                    Show Files
+                  </a>
+                  <div class="collapse" id="collapsefiles{{forloop.counter}}">
+                    {% for file in item.files %}
+                        {% if file.type %}
+                        <a target="_blank" href="{% url 'view_file_ios' %}?file={{file.file_path}}&amp;type={{file.type}}&amp;md5={{file.hash}}">{{ file.file_path }}</a>
+                        {% else %}
+                        {{ file.file_path }}
+                        {% endif %}
+                    </br>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+          </td>  
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

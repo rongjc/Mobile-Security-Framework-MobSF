@@ -1,0 +1,50 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Permission Analysis
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Permission</th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Descriptions</th>
+          <th class="col-12 col-xl-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reason In Manifest</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for perm,desc in permissions.items %}
+        {% if desc.status == 'dangerous' %}
+        <tr>
+        
+        <td class="col-12 col-xl-1 text-sm p-3">
+        
+          <span class="badge bg-danger">High Risk</span>
+        {% comment %} {% elif desc.status == 'normal' %}
+          <span class="badge bg-info">normal</span>
+        {% elif desc.status == 'signatureOrSystem' %}
+          <span class="badge bg-warning">SignatureOrSystem</span>
+        {% elif desc.status == 'signature' %}
+          <span class="badge bg-success">signature</span>
+        {% elif desc.status == 'unknown' %}
+          <span class="badge bg-secondary">unknown</span> {% endcomment %}
+        
+        </td>
+        <td class="col-12 col-xl-3 text-sm p-3 f">{{ perm }}</td>
+        <td class="col-12 col-xl-3 text-sm p-3">{{ desc.info }}</td>
+        <td class="col-12 col-xl-5 text-sm p-3">
+          {{ desc.description }}
+        </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

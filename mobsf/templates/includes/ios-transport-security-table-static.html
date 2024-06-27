@@ -1,0 +1,48 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+App Transport Security (ATS)
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Status</th>
+          <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+          <th class="col-12 col-xl-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Description</th>
+          {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if ats_analysis and 'ats_findings' in ats_analysis %}
+        {% for item in ats_analysis.ats_findings %}
+        {% if item.severity == "high" or item.severity == "warning"  %}
+        <tr>
+        
+        <td class="col-12 col-xl-1 text-sm p-3">                          
+          {% if item.severity == "high" %}
+            <span class="badge bg-danger">high</span>
+          {% elif item.severity == "secure" %}
+            <span class="badge bg-success">secure</span>
+          {% elif item.severity == "info" %}
+            <span class="badge bg-info">info</span>
+          {% elif item.severity == "warning" %}
+            <span class="badge bg-warning">warning</span>
+          {% endif %}
+        </td>
+        
+        <td class="col-12 col-xl-2 text-sm p-3">{{item.issue }}</td>
+        <td class="col-12 col-xl-8 text-sm p-3">{{item.description }}</td>  
+      </tr>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}
