@@ -121,6 +121,7 @@ def pdf(request, checksum, api=False, jsonres=False):
                     'margin-left': '0.50in',
                     'encoding': 'UTF-8',
                     'orientation': 'Landscape',
+                    "enable-local-file-access": "",
                     'custom-header': [
                         ('Accept-Encoding', 'gzip'),
                     ],

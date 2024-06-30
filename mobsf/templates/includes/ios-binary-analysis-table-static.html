@@ -46,7 +46,7 @@ IPA - Binary Analysis
             <td class="col-12 col-xl-6 text-sm p-3">{{macho_analysis.arc.description}}</td>
           </tr>
           <tr>
-            <td><span class="badge bg-{% if macho_analysis.rpath.severity == 'high' %}danger{% elif macho_analysis.rpath.severity == 'warning' %}warning{% else %}info{% endif %}'">{{macho_analysis.rpath.severity}}</span></td>
+            <td><span class="badge bg-{% if macho_analysis.rpath.severity == 'high' %}danger{% elif macho_analysis.rpath.severity == 'warning' %}warning{% else %}info{% endif %}">{{macho_analysis.rpath.severity}}</span></td>
             <td class="col-12 col-xl-1 text-sm p-3">RPATH</td>
             <td class="col-12 col-xl-4 text-sm p-3">{{macho_analysis.rpath.has_rpath}}</td>            
             <td>{{macho_analysis.rpath.description}}</td>

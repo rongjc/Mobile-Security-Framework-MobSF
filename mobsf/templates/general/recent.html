@@ -85,9 +85,9 @@
                         </td>
                         <td class="align-middle">
                           {% if e.PACKAGE_NAME or e.APP_NAME %}
-                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View Report</a>
-                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete Scan</a>
-
+                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View</a>
+                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete</a>
+                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="{% url "pdf" checksum=e.MD5%}"><i class="fas fa-file-pdf"></i>PDF</a>
                           {% else %}
                           <div class="text-xs font-weight-bold ">
                               <i class="material-icons text-sm my-auto me-1">schedule</i>

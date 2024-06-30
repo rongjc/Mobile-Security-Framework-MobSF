@@ -111,12 +111,17 @@ def static_analyzer(request, checksum, api=False):
     """Do static analysis on an request and save to db."""
     try:
         rescan = False
+        raw = False
         if api:
             re_scan = request.POST.get('re_scan', 0)
+            raw = request.POST.get('raw', 0)
         else:
             re_scan = request.GET.get('rescan', 0)
+            raw = request.GET.get('raw', 0)
         if re_scan == '1':
             rescan = True
+        if raw == '1':
+            raw = True            
         # Input validation
         app_dic = {}
         if not is_md5(checksum):
@@ -338,6 +343,8 @@ def static_analyzer(request, checksum, api=False):
                     app_dic['app_path'],
                     app_dic['md5'])
             template = 'static_analysis/android_binary_analysis.html'
+            if raw:
+                template = 'static_analysis/android_binary_analysis_raw.html'
             if api:
                 return context
             else:
