@@ -41,10 +41,17 @@ MD5_REGEX = re.compile(r'^[0-9a-f]{32}$')
 # Regex to capture strings between quotes or <string> tag
 STRINGS_REGEX = re.compile(r'(?<=\")(.+?)(?=\")|(?<=\<string>)(.+?)(?=\<)')
 # MobSF Custom regex to catch maximum URI like strings
+# URL_REGEX = re.compile(
+#     (
+#         r'((?:https?://|s?ftps?://|'
+#         r'file://|javascript:|data:|www\d{0,3}[.])'
+#         r'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
+#     ),
+#     re.UNICODE)
 URL_REGEX = re.compile(
     (
         r'((?:https?://|s?ftps?://|'
-        r'file://|javascript:|data:|www\d{0,3}[.])'
+        r'file://|www\d{0,3}[.])'
         r'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
     ),
     re.UNICODE)

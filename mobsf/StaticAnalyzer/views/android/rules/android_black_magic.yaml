@@ -1,0 +1,304 @@
+- id: android_outer_window_virtual_display
+  message: Android Popup Window Virtual Display
+  severity: high
+  input_case: exact
+  type: Regex
+  pattern: \.createVirtualDisplay\(
+  metadata:
+    ref: Malicious - Back Ground Activity Start
+    remark: Virtual Display can be used to display information without users' consent.
+- id: android_clocking_adjust_attribution
+  message: Android attribution cloaking
+  severity: high
+  input_case: exact
+  message: >-
+    Adjust's attribution could be abused to display malicious information only to selected users.
+  type: Regex
+  pattern: \.getAttribution\(
+  metadata:
+    ref: Cloaking - Attribution
+    remark: Attribution could be abused to display malicious information only to selected users, i.e. show malicious apps to only paid users.
+- id: android_su_detect
+  message: This App may request root (Super User) privileges.
+  type: RegexOr
+  pattern:
+    - com\.noshufou\.android\.su
+    - com\.thirdparty\.superuser
+    - eu\.chainfire\.supersu
+    - com\.koushikdutta\.superuser
+    - eu\.chainfire\.
+    - com\.saurik\.substrate
+    - de\.robv\.android\.xposed\.installer
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: cwe-250
+    owasp-mobile: ''
+    masvs: resilience-1
+    ref:  Previlleged Permission - Root 
+    remark: Root permission is often requested by malicious app to perform unauthorized actions.
+- id: android_detect_root
+  message: This App may have root detection capabilities.
+  input_case: exact
+  pattern:
+    - \.contains\("test-keys"\)
+    - \/system\/app\/Superuser.apk
+    - isDeviceRooted\(\)
+    - \/system\/bin\/failsafe\/su
+    - \/system\/bin\/su
+    - \/system\/xbin\/su
+    - \/sbin\/su
+    - \/system\/sd\/xbin\/su
+    - '"\/system\/xbin\/which", "su"'
+    - RootTools\.isAccessGiven\(\)
+  severity: high
+  type: RegexOr
+  metadata:
+    cvss: 0
+    cwe: ''
+    masvs: resilience-1
+    owasp-mobile: ''
+    ref:  Cloaking - Root Detection
+    remark: Root detection is often used by malicious app to prevent execution on rooted devices to cloak malicious activities.
+- id: android_dexguard_root_detection
+  message: DexGuard Root Detection code is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - RootDetector\.isDeviceRooted
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-1
+    remark: Root detection is often used by malicious app to prevent execution on rooted devices to cloak malicious activities.
+    ref: Cloaking - Root Detection
+
+- id: android_package_tamper
+  message: The App may use package signature for tamper detection.
+  type: RegexAnd
+  pattern:
+    - PackageManager\.GET_SIGNATURES
+    - getPackageName\(
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-3
+    ref:  Cloaking - Tamper Detection
+    remark: The App may use package signature for tamper detection. This information, though it's a standard practice, could be used to cloak the app from being used by security engineers.
+- id: android_certificate_tamper
+  message: DexGuard Signer Certificate Tamper Detection code is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - CertificateChecker\.checkCertificate
+  severity: good
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-3
+    ref:  Cloaking - Tamper Detection
+    remark: DexGuard Signer Certificate Tamper Detection code is identified. This information, though it's a standard practice, could be used to cloak the app from being used by security engineers.
+- id: android_tamper_detect
+  message: DexGuard App Tamper Detection code is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - TamperDetector\.checkApk
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-3
+    ref: Cloaking - Tamper Detection
+    remark: Prevents the app from being tampered with. This will prevent engineers from analyzing the app
+- id: android_emulator_detect
+  message: DexGuard Emulator Detection code is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - EmulatorDetector\.isRunningInEmulator
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-5
+    ref: Cloaking - Emulator Detection
+    remark: DexGuard Emulator Detection code is identified. This could be used to prevent Google's dynamic analysis on emulators.
+- id: android_debugger_detect
+  message: DexGuard Debugger Detection code is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - DebugDetector\.isDebuggerConnected
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-2
+    ref: Cloaking - Debugger Detection
+    remark: DexGuard Debugger Detection code is identified. This could also be used for cloaking to prevent users with debugging capability from analyzing the app.
+- id: android_debuggable
+  message: >-
+    DexGuard Debug Detection code to detect whether an App is debuggable or not
+    is identified.
+  type: RegexAnd
+  pattern:
+    - import dexguard\.util
+    - DebugDetector\.isDebuggable
+  severity: 
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-2
+    ref: Cloaking - Debuggable Detection
+    remark: DexGuard Debug Detection code to detect whether an App is debuggable to prevent users from debugging the app.
+- id: android_detect_frida
+  message: This App detects frida server.
+  type: RegexAndOr
+  pattern:
+    - fridaserver
+    - - '27047'
+      - REJECT
+      - LIBFRIDA
+  severity: good
+  input_case: exact
+  metadata:
+    cvss: 0
+    cwe: ''
+    owasp-mobile: ''
+    masvs: resilience-4
+    ref: Cloaking - Frida Detection
+    remark: This App detects frida server. It's often used by malicious app to prevent execution on devices with frida server to prevent the app from being dynamically analyzed.
+- id: android_webview_debug
+  message: Remote WebView debugging is enabled.
+  type: RegexAnd
+  pattern:
+    - \.setWebContentsDebuggingEnabled\(true\)
+    - WebView
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 5.4
+    cwe: cwe-919
+    owasp-mobile: m1
+    masvs: resilience-2
+    ref: Sensitive Information Disclosure
+    remark: Remote WebView debugging is enabled. Debugging information could be scanned by Google.
+- id: android_aar_jar_debug_enabled
+  message: Debug configuration enabled. Production builds must not be debuggable.
+  type: RegexAnd
+  pattern:
+    - ' class BuildConfig'
+    - DEBUG.{1,25}?true
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 5.4
+    cwe: cwe-919
+    owasp-mobile: m1
+    masvs: resilience-2
+    ref: Sensitive Information Disclosure
+    remark: Debug configuration enabled. Production builds must not be debuggable. Debugging information could be scanned by Google.
+- id: android_hiddenui
+  message: >-
+    Hidden elements in view can be used to hide data from user. But this data
+    can be leaked. Sometimes it's used to hide malicious information.
+  type: Regex
+  pattern: setVisibility\(View\.GONE\)|setVisibility\(View\.INVISIBLE\)
+  severity: high
+  input_case: exact
+  metadata:
+    cvss: 4.3
+    cwe: cwe-919
+    owasp-mobile: m1
+    masvs: storage-7
+    ref: Maskware - Hidden UI
+    remark: Hidden elements in view can be used to hide data from user. But this data can be leaked. Sometimes it's used to hide malicious information.
+- id: android_claoking_mcc_mnc
+  message: Mobile Country Code (MCC) and Mobile Network Code (MNC) detection found.
+  severity: high
+  input_case: exact
+  type: Regex
+  pattern: \.getNetworkOperator\(
+  metadata:
+    ref: Cloaking - MCCMNC
+    remark: Mobile Country Code (MCC) and Mobile Network Code (MNC) detection found. This could also be used for cloaking to show malicious apps to users from certain countries.
+- id: android_keep_alive_detect
+  message: Abused Keep alive detection found.
+  severity: high
+  input_case: exact
+  type: RegexOr
+  pattern: 
+    - app_process32
+    - app_process
+    - flock\(
+    - android\.app\.IActivityManager
+    - setOnBootReceivedListener
+    - TRANSACTION_startActivity
+    - START_ACTIVITY_TRANSACTION    
+    - lock file
+  metadata:
+    ref: Keep Alive
+    remark: Abused Keep alive detection found. Malicious app will leverage different techniques to keep the app alive in the background.
+- id: android_parcelable_attack
+  message: Possible parcelable fengshui detected.
+  severity: high
+  input_case: exact
+  type: RegexAnd
+  pattern: 
+    - writeInt
+    - writeToParcel
+  metadata:
+    ref: Malicious - Parcelable Fengshui
+    remark: Possible parcelable fengshui detected. This could also be used for getting previlleged permission and background activity start.
+
+- id: android_task_to_front
+  message: Move task to front detected.
+  severity: high
+  input_case: exact
+  type: RegexOr
+  pattern: 
+    - moveTaskToFront
+  metadata:
+    ref: Malicious - Move Task To Front
+    remark: Move task to front detected. This could also be used for getting previlleged permission and background activity start.
+
+- id: android_full_screen_intent
+  message: Full screen intent detected.
+  severity: high
+  input_case: exact
+  type: RegexOr
+  pattern: 
+    - setFullScreenIntent
+  metadata:
+    ref: Malicious - Full screen intent.
+    remark:  Full screen intent detected. Full screen intent should only be used for high priority notifications. It's often abused by malware to display malicious information.
+
+
+- id: android_chinese_character
+  message: Chinese character detected.
+  severity: high
+  input_case: exact
+  type: RegexOr
+  pattern: 
+    - ([\u4e00-\u9fff])
+  metadata:
+    ref: Suspicious - Chinese Character in code
+    remark:   Chinese character detected.

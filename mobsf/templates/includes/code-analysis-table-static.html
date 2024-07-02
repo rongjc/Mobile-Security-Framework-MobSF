@@ -11,8 +11,8 @@ Code Analysis
       <thead>
         <tr>
           <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Severity</th>
-          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Issue</th>
-          <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Standard</th>
+          <th class="col-12 col-xl-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Issue</th>
+          {% comment %} <th class="col-12 col-xl-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Standard</th> {% endcomment %}
           <th class="col-12 col-xl-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Files</th>
           {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
         </tr>
@@ -34,15 +34,16 @@ Code Analysis
               <span class="badge bg-warning">Privacy</span>
               {% endif %}
             </td>
-            <td class="col-12 col-xl-4 text-sm p-3">
+            <td class="col-12 col-xl-8 text-sm p-3">
               {% if details.metadata|key:"ref" %}
-                <a href="{{details.metadata.ref}}" target="_blank" rel="noopener"> {{ details.metadata.description }}</a>
+                {% comment %} <a href="{{details.metadata.ref}}" target="_blank" rel="noopener"> {{ details.metadata.description }}</a> {% endcomment %}
+                {{ details.metadata.ref }}
               {% else %}
                 {{ details.metadata.description }}
               {% endif %}
             </td>
-            <td class="col-12 col-xl-4 text-sm p-3 f">
-              {% if average_cvss %}
+            {% comment %} <td class="col-12 col-xl-4 text-sm p-3 f"> {% endcomment %}
+              {% comment %} {% if average_cvss %}
               <strong>CVSS V2:</strong>
               {{ details.metadata.cvss }}
               {% if details.metadata.cvss > 6 %}
@@ -58,8 +59,8 @@ Code Analysis
             {% endif %}
             {% if details.metadata.cwe %} <strong>CWE: </strong>{{ details.metadata.cwe }}{% endif %}
             {% if details.metadata|key:"owasp-mobile" %}</br> <strong>OWASP Top 10: </strong>{{ details.metadata|key:"owasp-mobile" }}{% endif %}
-            {% if details.metadata.masvs %}</br> <strong>OWASP MASVS: </strong>{{ details.metadata.masvs }}{% endif %}
-            </td>
+            {% if details.metadata.masvs %}</br> <strong>OWASP MASVS: </strong>{{ details.metadata.masvs }}{% endif %} {% endcomment %}
+            {% comment %} </td> {% endcomment %}
             <td class="col-12 col-xl-3 text-sm p-3">
               {% if details.files|length < 4 %}
               {% for file_path, lines in details.files.items %}
@@ -75,7 +76,7 @@ Code Analysis
                 <div class="collapse" id="collapsecode{{forloop.counter}}">
                   {% for file_path, lines in details.files.items %}
                     <small>
-                      <a href="{% url "view_source" %}?file={{ file_path }}&amp;md5={{ md5 }}&amp;type={{app_type}}&amp;lines={{ lines}}"> {{ file_path }}</a>
+                      <a href="{% url "view_source" %}?file={{ file_path }}&amp;md5={{ md5 }}&amp;type={{app_type}}&amp;lines={{ lines}}" target="_blank"> {{ file_path }}</a>
                     </small>
                   </br>
                   {% endfor %}

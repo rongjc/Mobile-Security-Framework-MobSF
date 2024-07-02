@@ -1,0 +1,87 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Possible Pinyin Strings
+{% endblock %}
+{% block card-body %}
+{% comment %} {% include 'base/list.html' with list=strings.strings_code_pinyin type="strings" limit=100 %} {% endcomment %}
+<div class="row gx-4 mb-2">
+    <div class="table-responsive mb-4">
+      <p></br>Sensitive Strings</p>
+      <table class="table-striped align-items-center mb-4">
+        <thead>
+          <tr>
+            <th class="col-12 col-xl-1 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 p-2">Reference</th>
+            <th class="col-12 col-xl-11 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">String</th>
+            {% comment %} <th class="col-12 col-xl-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th> {% endcomment %}
+          </tr>
+        </thead>
+        <tbody>
+            {% if strings.strings_code_pinyin|length != 0 %}
+                {% for val in strings.strings_code_pinyin %}
+                    <tr>
+                        <td class="col-12 col-xl-1 text-sm p-3">
+                            <span class="badge bg-danger">Chinese</span>
+                        </td>
+                        <td class="col-12 col-xl-11 text-sm p-3">
+                            {% if val|length < 100 %}
+                            {{val}}   
+                            {% else %}  
+                            <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsecode{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsecode{{forloop.counter}}">
+                                Show
+                              </a>
+                              <div class="collapse" id="collapsecode{{forloop.counter}}">
+                                {{val}}
+                              </div>
+                            {% endif %}
+                        </td>
+                     </tr>
+                {% endfor %}
+            {% endif %}    
+            {% if strings.string_code_payment|length != 0 %}
+                {% for val in strings.string_code_payment %}
+                    <tr>
+                        <td class="col-12 col-xl-1 text-sm p-3">
+                            <span class="badge bg-warning">Payment</span>
+                        </td>
+                        <td class="col-12 col-xl-11 text-sm p-3">
+                            {% if val|length < 100 %}
+                            {{val}}   
+                            {% else %}  
+                            <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsecode{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsecode{{forloop.counter}}">
+                                Show
+                            </a>
+                            <div class="collapse" id="collapsecode{{forloop.counter}}">
+                                {{val}}
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            {% comment %} {% if secrets|length != 0 %}
+                {% for val in secrets %}
+                    <tr>
+                        <td class="col-12 col-xl-1 text-sm p-3">
+                            <span class="badge bg-warning">Secret</span>
+                        </td>
+                        <td class="col-12 col-xl-11 text-sm p-3">
+                            {% if val|length < 100 %}
+                            {{val}}   
+                            {% else %}  
+                            <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsecode{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsecode{{forloop.counter}}">
+                                Show
+                            </a>
+                            <div class="collapse" id="collapsecode{{forloop.counter}}">
+                                {{val}}
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}         {% endcomment %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+{% endblock %}

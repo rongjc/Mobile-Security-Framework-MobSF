@@ -361,17 +361,30 @@ def generate_valid_pinyin_combinations():
     finals = ['a', 'o', 'e', 'i', 'u', 'ü', 'ai', 'ei', 'ui', 'ao', 'ou', 'iu', 'ie', 'üe', 'er', 'an', 'en', 'in', 'un', 'ün', 'ang', 'eng', 'ing', 'ong']
 
     invalid_combinations = {
-        '': ['i', 'ü', 'in', 'ün'],
-        'j': ['a', 'o', 'e', 'er'],
-        'q': ['a', 'o', 'e', 'er'],
-        'x': ['a', 'o', 'e', 'er'],
-        'zh': ['ü'],
-        'ch': ['ü'],
-        'sh': ['ü'],
-        'r': ['ü'],
-        'z': ['ü'],
-        'c': ['ü'],
-        's': ['ü']
+        '': ['i', 'ü', 'in', 'ün', 'ong'],
+        'b': ['e', 'ü', 'ui', 'ou', 'iu', 'üe', 'er', 'un', 'ün', 'ong'],
+        'p': ['e', 'ü', 'ui', 'ou', 'iu', 'üe', 'er', 'un', 'ün', 'ong'],
+        'm': ['e', 'ü', 'ui', 'ou', 'iu', 'üe', 'er', 'un', 'ün', 'ong'],
+        'f': ['e', 'ü', 'ui', 'ou', 'iu', 'üe', 'er', 'un', 'ün', 'ong'],
+        'd': ['o', 'ü', 'iu', 'üe', 'er', 'ün', 'ong'],
+        't': ['o', 'ü', 'iu', 'üe', 'er', 'ün', 'ong'],
+        'n': ['o', 'ui', 'iu', 'üe', 'er', 'ün', 'ong'],
+        'l': ['o', 'ui', 'iu', 'üe', 'er', 'ün', 'ong'],
+        'g': ['i', 'ü', 'üe', 'er', 'un', 'ün'],
+        'k': ['i', 'ü', 'üe', 'er', 'un', 'ün'],
+        'h': ['i', 'ü', 'üe', 'er', 'un', 'ün'],
+        'j': ['a', 'o', 'e', 'er', 'ou', 'uo'],
+        'q': ['a', 'o', 'e', 'er', 'ou', 'uo'],
+        'x': ['a', 'o', 'e', 'er', 'ou', 'uo'],
+        'zh': ['ü', 'iu', 'üe'],
+        'ch': ['ü', 'iu', 'üe'],
+        'sh': ['ü', 'iu', 'üe'],
+        'r': ['ü', 'iu', 'üe'],
+        'z': ['ü', 'iu', 'üe'],
+        'c': ['ü', 'iu', 'üe'],
+        's': ['ü', 'iu', 'üe'],
+        'y': ['o', 'ong', 'üe'],
+        'w': ['i', 'ü', 'üe', 'ie', 'üe']
     }
 
     valid_combinations = []
@@ -383,6 +396,15 @@ def generate_valid_pinyin_combinations():
 
     return set(valid_combinations)
 
+def contains_chinese_characters(s: str) -> bool:
+    # Regular expression to match any Chinese character
+    chinese_character_pattern = re.compile(r'[\u4e00-\u9fff]')
+    
+    # Search the string for any Chinese character
+    if chinese_character_pattern.search(s):
+        return True
+    return False
+
 def contains_at_least_two_pinyin(text, pinyin_syllables):
     """
     Check if the text contains at least two valid Pinyin syllables.
@@ -393,7 +415,7 @@ def contains_at_least_two_pinyin(text, pinyin_syllables):
     pinyin_count = sum(1 for word in words if word in pinyin_syllables)
     return pinyin_count >= 2
 
-def contains_sufficient_pinyin_percentage(text, pinyin_syllables, percentage_threshold=60):
+def contains_sufficient_pinyin_percentage(text, pinyin_syllables, percentage_threshold=80):
     """
     Check if the text contains a sufficient percentage of Pinyin syllables.
     The percentage of words that must be Pinyin is defined by 'percentage_threshold'.
@@ -412,6 +434,15 @@ def contains_sufficient_pinyin_percentage(text, pinyin_syllables, percentage_thr
 
     return pinyin_percentage >= percentage_threshold
 
+def contains_payment_strings(strings):
+    bool(re.search(r'paypal|stripe|venmo|alipay|wechatpay|gpay|paytm', strings, re.IGNORECASE))
+
+def contains_obfuscation_patterns(strings):
+    bool(re.search(r'(?:[A-Za-z0-9+/]{4}){10,}|(?:\\x[0-9A-Fa-f]{2})+|(?:\\u[0-9A-Fa-f]{4})+|chr\(\d+\)', strings, re.IGNORECASE))
+
+def select_payment_strings(strings):
+    return [s for s in strings if contains_payment_strings(s)]
+
 def select_pinyin_strings(strings):
     """
     Filters a list of strings, returning those that contain sequences of two or more linked Hanyu Pinyin syllables,
@@ -419,7 +450,7 @@ def select_pinyin_strings(strings):
     Optimized for efficient evaluation.
     """
     valid_pinyin_syllables = generate_valid_pinyin_combinations()
-    return [s for s in strings if contains_sufficient_pinyin_percentage(s, valid_pinyin_syllables)]
+    return [s for s in strings if contains_sufficient_pinyin_percentage(s, valid_pinyin_syllables) or contains_chinese_characters(s)]
 
 def strings_and_entropies(src, exts):
     """Get Strings and Entropies."""
@@ -428,6 +459,7 @@ def strings_and_entropies(src, exts):
         'strings': set(),
         'secrets': set(),
         'pinyin': set(),
+        'payment': set(),
     }
     try:
         if not src.exists():
@@ -454,6 +486,7 @@ def strings_and_entropies(src, exts):
         if data['strings']:
             data['secrets'] = get_entropies(data['strings'])
             data['pinyin'] = select_pinyin_strings(data['strings'])
+            data['payment'] = select_payment_strings(data['strings'])
     except Exception:
         logger.exception('Extracting Data from Code')
     return data

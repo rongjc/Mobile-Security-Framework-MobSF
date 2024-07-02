@@ -85,6 +85,7 @@ def strings_from_code(src_dir, typ, exts):
         'strings': set(),
         'secrets': set(),
         'pinyin': set(),
+        'payment': set(),
     }
     try:
         src_dir = get_android_src_dir(Path(src_dir), typ)
@@ -132,6 +133,7 @@ def get_strings_metadata(apk, app_dir, elf_strings, typ, exts, code_dic):
         code_res = strings_from_code(app_dir, typ, exts)
         strings['strings_code'] = list(code_res['strings'])
         strings['strings_code_pinyin'] = list(code_res['pinyin'])
+        strings['strings_code_payment'] = list(code_res['payment'])
         secrets.extend(code_res['secrets'])
 
     code_dic['strings'] = strings

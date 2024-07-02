@@ -66,6 +66,7 @@ def code_analysis(app_dir, typ, manifest_file, android_permissions):
         root = Path(settings.BASE_DIR) / 'StaticAnalyzer' / 'views'
         and_rules = root / 'android' / 'rules'
         code_rules = and_rules / 'android_rules.yaml'
+        code_rules = and_rules / 'android_black_magic.yaml'
         api_rules = and_rules / 'android_apis.yaml'
         perm_rules = and_rules / 'android_permissions.yaml'
         niap_rules = and_rules / 'android_niap.yaml'
