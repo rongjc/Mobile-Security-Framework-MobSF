@@ -92,8 +92,10 @@
                           <div class="text-xs font-weight-bold ">
                               <i class="material-icons text-sm my-auto me-1">schedule</i>
                               <p class="mb-0 text-sm"> Scanning </p>
+                              <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete</a>
                             </div>
                           {% endif %}
+                          
                         </td>
                       </tr>
                       {% endfor %}
