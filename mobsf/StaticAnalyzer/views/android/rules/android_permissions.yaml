@@ -5481,8 +5481,8 @@
     - getExternalStorageDirectory\(
   input_case: exact
   severity: info
-- id: android.content.ContactDirectory
-  message: android.permission.ContactDirectory
+- id: android.permission.CONTACT_DIRECTORY
+  message: android.content.ContactDirectory
   type: RegexAndOr
   pattern:
   -  android\.content\.ContactDirectory

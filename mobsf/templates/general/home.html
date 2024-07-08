@@ -15,6 +15,7 @@
               <div class="col-lg-5 col-md-7 mx-auto">
                 <div class="card">
                   <div class="card-body px-lg-5 py-lg-5 text-center">
+                    {%  if allow_upload %}
                     <h2>Upload your apk file for scanning</h2>
                     <div class="text-center">
                     <input type="file" name="file" id="uploadFile" placeholder="Choose File" hidden>
@@ -23,6 +24,10 @@
                     <label  type="button" class="btn bg-gradient-primary my-4" for="uploadFile">Upload your apk file!</label>
                     </div>
                     <progress id="progressBar" value="0" max="100" style="width:300px;visibility:hidden;" ></progress>
+                    {% else %}
+                    <div class="alert alert-primary text-white font-weight-bold" role="alert" >You have already exceeded your Max Scan, please delete some scans and try again.</div>
+                    
+                    {% endif %}
                   </div>
                 </div>
               </div>

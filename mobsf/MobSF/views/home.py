@@ -68,6 +68,8 @@ def index(request):
         'version': settings.MOBSF_VER,
         'mimes': mimes,
         'exts': '|'.join(exts),
+        'max_upload': RecentScansDB.objects.count(),
+        'allow_upload': RecentScansDB.objects.count() < settings.MAX_SCAN,
     }
     template = 'general/home.html'
     return render(request, template, context)
