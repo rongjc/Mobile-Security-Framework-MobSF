@@ -58,7 +58,7 @@ except Exception:
     logger.exception('Reading Config')
     CONFIG_HOME = False
 
-MAX_SCAN = 5
+MAX_SCAN = 1
 
 # ===MOBSF SECRET GENERATION AND DB MIGRATION====
 SECRET_KEY = first_run(SECRET_FILE, BASE_DIR, MobSF_HOME)
