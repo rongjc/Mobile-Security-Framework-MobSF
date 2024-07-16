@@ -43,7 +43,8 @@ if [ ! -z "$var" ]; then
     validate_port $PORT
  else
     IP='[::]'
-    PORT='8000'
+    # PORT='8000'
+    PORT='80'
 fi	 
 python3 -m poetry run gunicorn -b ${IP}:${PORT} mobsf.MobSF.wsgi:application --workers=1 --threads=10 --timeout=3600 \
     --log-level=citical --log-file=- --access-logfile=- --error-logfile=- --capture-output 
