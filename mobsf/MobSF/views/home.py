@@ -18,6 +18,7 @@ from django.shortcuts import (
     render,
 )
 from django.template.defaulttags import register
+from django.contrib.auth import get_user_model
 
 from mobsf.MobSF.forms import FormUtil, UploadFileForm
 from mobsf.MobSF.utils import (
@@ -276,7 +277,9 @@ def recent_scans(request, page_size=10, page_number=1):
     page_obj = paginator.get_page(page_number)
     page_obj.page_size = page_size
     md5_list = [i['MD5'] for i in page_obj]
-
+    User = get_user_model()
+    users = User.objects.all()
+    user_dict = {str(user.id): user.username for user in users}
     android = StaticAnalyzerAndroid.objects.filter(
         MD5__in=md5_list).only(
             'PACKAGE_NAME', 'VERSION_NAME', 'FILE_NAME', 'MD5')
@@ -306,12 +309,15 @@ def recent_scans(request, page_size=10, page_number=1):
         else:
             report_file = updir / entry['MD5'] / 'logcat.txt'
         entry['DYNAMIC_REPORT_EXISTS'] = report_file.exists()
+        # print(entry)
+        entry['USER_NAME'] = user_dict.get(entry['USER_ID'], "User with this ID does not exist")
         entries.append(entry)
     context = {
         'title': 'Recent Scans',
         'entries': entries,
         'version': settings.MOBSF_VER,
         'page_obj': page_obj,
+        'is_staff': request.user.is_staff,
     }
     template = 'general/recent.html'
     return render(request, template, context)
