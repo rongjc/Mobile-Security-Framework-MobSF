@@ -39,18 +39,21 @@ register.filter('md5', get_md5)
 PERM_CAN_SCAN = 'can_scan'
 PERM_CAN_SUPPRESS = 'can_suppress'
 PERM_CAN_DELETE = 'can_delete'
-
+PERM_CAN_VIEW= 'can_view'
 
 class Permissions(Enum):
     SCAN = f'StaticAnalyzer.{PERM_CAN_SCAN}'
     SUPPRESS = f'StaticAnalyzer.{PERM_CAN_SUPPRESS}'
     DELETE = f'StaticAnalyzer.{PERM_CAN_DELETE}'
+    VIEW = f'StaticAnalyzer.{PERM_CAN_VIEW}'
+    
 
 
 class DjangoPermissions(Enum):
     SCAN = (PERM_CAN_SCAN, 'Scan Files')
     SUPPRESS = (PERM_CAN_SUPPRESS, 'Suppress Findings')
     DELETE = (PERM_CAN_DELETE, 'Delete Scans')
+    VIEW = (PERM_CAN_DELETE, 'Can View Scans')
 
 
 MAINTAINER_GROUP = 'Maintainer'

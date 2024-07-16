@@ -18,6 +18,7 @@ def add_to_recent_scan(data):
         db_obj = RecentScansDB.objects.filter(MD5=data['hash'])
         if not db_obj.exists():
             new_db_obj = RecentScansDB(
+                USER_ID=data['user_id'],
                 ANALYZER=data['analyzer'],
                 SCAN_TYPE=data['scan_type'],
                 FILE_NAME=data['file_name'],
@@ -31,7 +32,7 @@ def add_to_recent_scan(data):
         logger.exception('Adding Scan URL to Database')
 
 
-def handle_uploaded_file(content, extension):
+def handle_uploaded_file(content, extension, user_id):
     """Write Uploaded File."""
     md5 = hashlib.md5()
     bfr = isinstance(content, io.BufferedReader)
@@ -43,6 +44,7 @@ def handle_uploaded_file(content, extension):
         # File upload
         for chunk in content.chunks():
             md5.update(chunk)
+        md5.update(str(user_id).encode())
     md5sum = md5.hexdigest()
     anal_dir = os.path.join(settings.UPLD_DIR, md5sum + '/')
     if not os.path.exists(anal_dir):
@@ -63,17 +65,19 @@ class Scanning(object):
     def __init__(self, request):
         self.file = request.FILES['file']
         self.file_name = request.FILES['file'].name
+        self.user_id = request.user.id
         self.data = {
             'analyzer': 'static_analyzer',
             'status': 'success',
             'hash': '',
             'scan_type': '',
             'file_name': self.file_name,
+            'user_id': self.user_id,
         }
 
     def scan_apk(self):
         """Android APK."""
-        md5 = handle_uploaded_file(self.file, '.apk')
+        md5 = handle_uploaded_file(self.file, '.apk', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'apk'
         add_to_recent_scan(self.data)
@@ -82,7 +86,7 @@ class Scanning(object):
 
     def scan_xapk(self):
         """Android XAPK."""
-        md5 = handle_uploaded_file(self.file, '.xapk')
+        md5 = handle_uploaded_file(self.file, '.xapk', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'xapk'
         add_to_recent_scan(self.data)
@@ -91,7 +95,7 @@ class Scanning(object):
 
     def scan_apks(self):
         """Android Split APK."""
-        md5 = handle_uploaded_file(self.file, '.apk')
+        md5 = handle_uploaded_file(self.file, '.apk', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'apks'
         add_to_recent_scan(self.data)
@@ -100,7 +104,7 @@ class Scanning(object):
 
     def scan_aab(self):
         """Android App Bundle."""
-        md5 = handle_uploaded_file(self.file, '.aab')
+        md5 = handle_uploaded_file(self.file, '.aab', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'aab'
         add_to_recent_scan(self.data)
@@ -109,7 +113,7 @@ class Scanning(object):
 
     def scan_jar(self):
         """Java JAR file."""
-        md5 = handle_uploaded_file(self.file, '.jar')
+        md5 = handle_uploaded_file(self.file, '.jar', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'jar'
         add_to_recent_scan(self.data)
@@ -118,25 +122,25 @@ class Scanning(object):
 
     def scan_aar(self):
         """Android AAR file."""
-        md5 = handle_uploaded_file(self.file, '.aar')
+        md5 = handle_uploaded_file(self.file, '.aar', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'aar'
         add_to_recent_scan(self.data)
-        logger.info('Performing Static Analysis of Android AAR')
+        logger.info('Performing Static Analysis of Android AAR', self.user_id)
         return self.data
 
     def scan_so(self):
         """Shared object file."""
-        md5 = handle_uploaded_file(self.file, '.so')
+        md5 = handle_uploaded_file(self.file, '.so', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'so'
         add_to_recent_scan(self.data)
-        logger.info('Performing Static Analysis of Shared Object')
+        logger.info('Performing Static Analysis of Shared Object', self.user_id)
         return self.data
 
     def scan_zip(self):
         """Android /iOS Zipped Source."""
-        md5 = handle_uploaded_file(self.file, '.zip')
+        md5 = handle_uploaded_file(self.file, '.zip', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'zip'
         add_to_recent_scan(self.data)
@@ -145,7 +149,7 @@ class Scanning(object):
 
     def scan_ipa(self):
         """IOS Binary."""
-        md5 = handle_uploaded_file(self.file, '.ipa')
+        md5 = handle_uploaded_file(self.file, '.ipa', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'ipa'
         self.data['analyzer'] = 'static_analyzer_ios'
@@ -155,7 +159,7 @@ class Scanning(object):
 
     def scan_dylib(self):
         """IOS Dylib."""
-        md5 = handle_uploaded_file(self.file, '.dylib')
+        md5 = handle_uploaded_file(self.file, '.dylib', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'dylib'
         self.data['analyzer'] = 'static_analyzer_ios'
@@ -165,7 +169,7 @@ class Scanning(object):
 
     def scan_a(self):
         """Scan static library."""
-        md5 = handle_uploaded_file(self.file, '.a')
+        md5 = handle_uploaded_file(self.file, '.a', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'a'
         self.data['analyzer'] = 'static_analyzer_ios'
@@ -175,7 +179,7 @@ class Scanning(object):
 
     def scan_appx(self):
         """Windows appx."""
-        md5 = handle_uploaded_file(self.file, '.appx')
+        md5 = handle_uploaded_file(self.file, '.appx', self.user_id)
         self.data['hash'] = md5
         self.data['scan_type'] = 'appx'
         self.data['analyzer'] = 'static_analyzer_windows'

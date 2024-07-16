@@ -14,7 +14,7 @@ class RecentScansDB(models.Model):
         """Meta class for RecentScansDB model."""
 
         permissions = (P.DELETE.value, P.SCAN.value)
-
+    USER_ID = models.CharField(max_length=50, default='')
     ANALYZER = models.CharField(max_length=50, default='')
     SCAN_TYPE = models.CharField(max_length=10, default='')
     FILE_NAME = models.CharField(max_length=260, default='')
@@ -131,6 +131,7 @@ class StaticAnalyzerWindows(models.Model):
 
     FILE_NAME = models.CharField(max_length=260, default='')
     APP_NAME = models.CharField(max_length=260, default='')
+    APP_NAME = models.CharField(max_length=50, default='')
     PUBLISHER_NAME = models.TextField(default='')
     SIZE = models.CharField(max_length=50, default='')
     MD5 = models.CharField(max_length=32, default='', primary_key=True)

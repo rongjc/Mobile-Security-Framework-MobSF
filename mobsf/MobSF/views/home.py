@@ -64,12 +64,14 @@ def index(request):
     exts = (settings.ANDROID_EXTS
             + settings.IOS_EXTS
             + settings.WINDOWS_EXTS)
+    current_user = request.user
     context = {
         'version': settings.MOBSF_VER,
         'mimes': mimes,
         'exts': '|'.join(exts),
         'max_upload': RecentScansDB.objects.count(),
         'allow_upload': RecentScansDB.objects.count() < settings.MAX_SCAN,
+        'current_user': current_user.id,
     }
     template = 'general/home.html'
     return render(request, template, context)
@@ -266,7 +268,11 @@ def recent_scans(request, page_size=10, page_number=1):
     """Show Recent Scans Route."""
     entries = []
     paginator = Paginator(
-        RecentScansDB.objects.all().order_by('-TIMESTAMP').values(), page_size)
+        RecentScansDB.objects.filter(USER_ID=request.user.id).order_by('-TIMESTAMP').values(), page_size)
+
+    if request.user.is_staff:
+        paginator = Paginator(
+            RecentScansDB.objects.all().order_by('-TIMESTAMP').values(), page_size)
     page_obj = paginator.get_page(page_number)
     page_obj.page_size = page_size
     md5_list = [i['MD5'] for i in page_obj]

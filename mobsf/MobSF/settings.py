@@ -58,7 +58,7 @@ except Exception:
     logger.exception('Reading Config')
     CONFIG_HOME = False
 
-MAX_SCAN = 1
+MAX_SCAN = 999999999
 
 # ===MOBSF SECRET GENERATION AND DB MIGRATION====
 SECRET_KEY = first_run(SECRET_FILE, BASE_DIR, MobSF_HOME)
@@ -176,8 +176,8 @@ DATABASES = {
 """
 # ===============================================
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-# DEBUG = bool(os.getenv('MOBSF_DEBUG', '0') == '1')
-DEBUG = False
+DEBUG = bool(os.getenv('MOBSF_DEBUG', '0') == '1')
+# DEBUG = False
 DJANGO_LOG_LEVEL = DEBUG
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = ['127.0.0.1', 'mobsf', '*']
