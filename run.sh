@@ -46,5 +46,5 @@ if [ ! -z "$var" ]; then
     # PORT='8000'
     PORT='80'
 fi	 
-python3 -m poetry run gunicorn -b ${IP}:${PORT} mobsf.MobSF.wsgi:application --workers=1 --threads=10 --timeout=3600 \
+python3 -m poetry run gunicorn -b ${IP}:${PORT} mobsf.MobSF.wsgi:application --workers=10 --threads=20 --timeout=3600 \
     --log-level=citical --log-file=- --access-logfile=- --error-logfile=- --capture-output 

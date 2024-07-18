@@ -57,6 +57,8 @@ paramiko = "^3.3.1"
 six = ">=1.16.0"
 django-brake = "^1.6.0"
 python3-saml = "^1.16.0"
+celery = "^5.4.0"
+redis = "^5.0.7"
 
 [build-system]
 requires = ["poetry-core"]

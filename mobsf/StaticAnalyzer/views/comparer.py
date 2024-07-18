@@ -5,6 +5,8 @@ Compare Apps.
 Module for comparing app results.
 """
 import re
+import os
+import subprocess
 from collections import defaultdict
 from copy import deepcopy
 
@@ -226,8 +228,26 @@ def generic_compare(request,
                 first_app[section]]
 
     diff_browsable_activities(context, first_app, second_app)
-
+    file_name = f"compare/{first_hash}-{second_hash}.html"
+    file_temp = f"compare/{first_hash}-{second_hash}.temp"
+    file_path2 = os.path.join(settings.STATIC_URL, file_name)
+    file_path = os.path.join(settings.STATIC_ROOT, file_name)
+    file_temp_path = os.path.join(settings.STATIC_ROOT, file_temp)
+    context['file_path'] = file_path2
+    context['result_file_exist'] = os.path.exists(file_path)
+    context['scaning_in_progress'] = os.path.exists(file_temp_path)
+    context['first_hash'] = first_hash
+    context['second_hash'] = second_hash
     template = 'static_analysis/compare.html'
+    shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
+    first_src = os.path.join(settings.UPLD_DIR, first_hash, 'java_source')
+    second_src = os.path.join(settings.UPLD_DIR, second_hash, 'java_source')
+    try:
+        # result = subprocess.run(['sh', shell_script_path,first_hash,second_hash, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+        context['file_exist'] = os.path.exists(file_path)
+        # print(result.stdout)
+    except subprocess.TimeoutExpired as e:
+        print("Command timed out")
     if api:
         return context
     else:

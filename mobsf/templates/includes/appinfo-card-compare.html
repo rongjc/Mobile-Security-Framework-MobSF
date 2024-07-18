@@ -1,0 +1,117 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+App information
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    <table class="table-striped align-items-center mb-4">
+      <thead>
+        <tr>
+          <th class="col-12 col-xl-1 text-uppercase text-secondary text-sm font-weight-bolder opacity-7"></th>
+          <th class="col-12 col-xl-3 text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Common</th>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-sm font-weight-bolder opacity-7"><img id="app_icon" src="
+            {% if first_app.icon_path %}
+                /download/{{ first_app.icon_path }}
+            {% else %}
+                {% static 'img/no_icon.png' %}
+            {% endif %}
+            "/>{{ first_app.name_ver }}</th>
+          <th class="col-12 col-xl-4 text-uppercase text-secondary text-sm font-weight-bolder opacity-7"><img id="app_icon" src="
+            {% if second_app.icon_path %}
+                /download/{{ second_app.icon_path }}
+            {% else %}
+                {% static 'img/no_icon.png' %}
+            {% endif %}
+            "/>{{ second_app.name_ver }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Size
+          </td>    
+          <td class="col-12 col-xl-3 text-uppercase text-secondary text-sm font-weight-bolder opacity-7"></td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ first_app.size }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ second_app.size }}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Certificate 
+          </td>    
+          <td class="col-12 col-xl-3 text-uppercase text-secondary text-sm font-weight-bolder opacity-7"></td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ first_app.cert_subject }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ second_app.cert_subject }}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Permissions 
+          </td>    
+          <td class="col-12 col-xl-3 text-sm p-3">
+            {{ permissions.common | length }}
+          </td>          
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ permissions.only_first | length }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ permissions.only_second | length }}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Android API 
+          </td>    
+          <td class="col-12 col-xl-3 text-sm p-3">
+            {{ android_api.common | length }}
+          </td>          
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ android_api.only_first | length }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ android_api.only_second | length }}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Permissions 
+          </td>    
+          <td class="col-12 col-xl-3 text-sm p-3">
+            {{ permissions.common | length }}
+          </td>          
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ permissions.only_first | length }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ permissions.only_second | length }}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-12 col-xl-1 text-sm p-3">
+            Urls
+          </td>    
+          <td class="col-12 col-xl-3 text-sm p-3">
+            {{ urls.common | length }}
+          </td>          
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ urls.only_first | length }}
+          </td>
+          <td class="col-12 col-xl-4 text-sm p-3">
+            {{ urls.only_second | length }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

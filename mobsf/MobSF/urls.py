@@ -245,6 +245,8 @@ if settings.API_ONLY == '0':
         # App Compare
         re_path(r'^compare/(?P<hash1>[0-9a-f]{32})/(?P<hash2>[0-9a-f]{32})/$',
                 shared_func.compare_apps),
+        re_path(r'^code_scan/(?P<hash1>[0-9a-f]{32})/(?P<hash2>[0-9a-f]{32})/$',
+                shared_func.start_code_scan,name='start_code_scan'),                
         # Relative Shared & Dynamic Library scan
         re_path(fr'^scan_library/{checksum_regex}$',
                 shared_func.scan_library,

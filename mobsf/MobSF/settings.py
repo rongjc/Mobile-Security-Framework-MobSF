@@ -241,7 +241,10 @@ TEMPLATES = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 STATIC_URL = '/static/'
+COMPARE_URL = '/static/compare/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+SCRIPT_ROOT =os.path.join(BASE_DIR, 'script')
+SIMILARITY_SCRIPT_ROOT = os.path.join(SCRIPT_ROOT, 'check_similarity.sh')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # 256MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 268435456

@@ -15,7 +15,7 @@ import subprocess
 import zipfile
 from urllib.parse import urlparse
 from pathlib import Path
-
+from django.http import JsonResponse
 import requests
 
 import arpy
@@ -236,6 +236,26 @@ def compare_apps(request, hash1: str, hash2: str, api=False):
     logger.info(
         'Starting App compare for %s and %s', hash1, hash2)
     return generic_compare(request, hash1, hash2, api)
+
+@login_required
+def start_code_scan(request, hash1: str, hash2: str, api=False):
+    
+    file_name = f"compare/{hash1}-{hash2}.html"
+    file_temp = f"compare/{hash1}-{hash2}.temp"
+    file_path2 = os.path.join(settings.STATIC_URL, file_name)
+    file_path = os.path.join(settings.STATIC_ROOT, file_name)
+    file_temp_path = os.path.join(settings.STATIC_ROOT, file_temp)
+    template = 'static_analysis/compare.html'
+    shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
+    first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
+    second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
+    try:
+        result = subprocess.run(['sh', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+        print(result.stdout)
+        return JsonResponse({'status': 'success'}, status=200) 
+    except subprocess.TimeoutExpired as e:
+        print("Command timed out")
+        return JsonResponse({'status': 'failure'}, status=200) 
 
 
 def get_avg_cvss(findings):

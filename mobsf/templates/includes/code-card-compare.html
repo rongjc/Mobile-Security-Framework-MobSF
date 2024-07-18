@@ -1,0 +1,25 @@
+{% extends "includes/base-card.html" %}
+{% load static %}
+{% block card-header %}
+Code Similarity
+{% endblock %}
+{% block card-body %}
+{% comment %} <div class="card card-body mx-3 mx-md-4 mt-n6"> {% endcomment %}
+  <div class="row gx-4 mb-2">
+  <div class="table-responsive mb-4">
+    {% if scaning_in_progress%}
+    <div class="alert alert-secondary text-white font-weight-bold" role="alert" >Scanning in progress, please wait for a while and refreh</div>
+    {% else %}
+      <div class="table-responsive p-3">
+        <a class="btn  bg-gradient-primary text-white  mb-0 me-1" id="{{ first_hash }}_{{ second_hash }}" onclick="start_code_scan('{{ first_hash }}','{{ second_hash }}')"><i class="fas fa-search"></i>Start Code Scan</a>
+      </div>
+      {% if file_exist %}
+        <iframe src="{{ file_path }}" width="100%" height="1000px"></iframe>
+      {% else %}
+        <div class="alert alert-secondary text-white font-weight-bold" role="alert" >You don't have any scan history yet. Please scan first.</div>
+      {% endif %}
+    {% endif %}
+  </div>
+  </div>
+{% comment %} </div> {% endcomment %}
+{% endblock %}

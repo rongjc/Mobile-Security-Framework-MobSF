@@ -50,7 +50,7 @@
                 <div class="table-responsive">
                   <table class="table align-items-center mb-0">
                     <thead>
-                      <tr>
+                      <tr >
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">App</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">File</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Package</th>
@@ -64,7 +64,7 @@
                     <tbody>
                       {% for e in entries %}
                       <tr>
-                        <td>
+                        <td id="{{ e.MD5 }}">
                           <div class="d-flex px-2 py-1">
                             <div>
                               <img class="avatar avatar-sm me-3" src="{% if e.ICON_PATH %}/download/{{ e.ICON_PATH }}{% else %}{% static 'img/no_icon.png' %}{% endif %}">
@@ -98,6 +98,9 @@
                           {% if e.PACKAGE_NAME or e.APP_NAME %}
                           <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View</a>
                           <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete</a>
+                          {% if is_staff %}
+                          <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}_{{ e.FILE_NAME }}"><i class="fas fa-not-equal"></i>Compare</a>
+                          {% endif %}
                           {% comment %} <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="{% url "pdf" checksum=e.MD5%}"><i class="fas fa-file-pdf"></i>PDF</a> {% endcomment %}
                           {% else %}
                           <div class="text-xs font-weight-bold ">
@@ -106,6 +109,7 @@
                               <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete</a>
                             </div>
                           {% endif %}
+                          
                           
                         </td>
                       </tr>
@@ -129,8 +133,8 @@
     var diff_first_md5 = '';
     var diff_first_name = '';
 
-    // When a row is clicked, we check if we already have first scan, if so, ask for confirmation
-    function enable_partner_select() {
+       // When a row is clicked, we check if we already have first scan, if so, ask for confirmation
+       function enable_partner_select() {
         $('table tr').on('click', function (e) {
             e.preventDefault();
             if (diff_first_md5 == '') {
@@ -142,8 +146,11 @@
 
 
     function enable_diff_button(){
-
-    }delete_scan
+        $(".diffButton").on('click', function(e){
+            e.stopPropagation();
+            diff_select($(this));
+        });
+    }
 
     function disable_diff_button() {
         $('.diffButton').off('click');
@@ -181,7 +188,8 @@
     function diff_confirmation(item) {
         // First we need the id which has the md5 and name
         rows_tds = item.find('td');
-        selected_md5 = rows_tds[3].innerText;
+        selected_md5 = rows_tds[0].attributes['id'].value;
+        console.log(selected_md5);
         if (diff_first_md5 == selected_md5) {
             return;
         }
