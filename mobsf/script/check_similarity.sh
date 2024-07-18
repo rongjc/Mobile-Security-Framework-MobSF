@@ -20,7 +20,7 @@ mkdir $first_hash-$second_hash
 cd $first_hash-$second_hash
 cp -rf $first_file ./$first_hash
 cp -rf $second_file ./$second_hash
-nicad6 functions java ./$first_hash ./$second_hash
-cp ~/test/template.html $output_file
+nicad6 functions java ./$first_hash ./$second_hash type3-2-report
+cp ./{$first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html $output_file
 rm -rf ../$first_hash-$second_hash
 rm $filte_temp_path
