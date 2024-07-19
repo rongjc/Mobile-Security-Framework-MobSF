@@ -177,7 +177,8 @@ urlpatterns = [
     # Frida
     re_path(r'^api/v1/frida/ios_instrument$', api_idz.api_ios_instrument),
     re_path(r'^api/v1/dynamic/ios_report_json$', api_idz.api_ios_view_report),
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.API_ONLY == '0':
     urlpatterns.extend([
         # General
@@ -395,8 +396,7 @@ if settings.API_ONLY == '0':
 
         # Test
         re_path(r'^tests/$', tests.start_test),
-    ])+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+    ])
 utils.print_version()
 init_exec_hooks()
 store_exec_hashes_at_first_run()
