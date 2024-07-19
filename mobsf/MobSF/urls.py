@@ -1,4 +1,5 @@
 from django.urls import re_path
+from django.conf.urls.static import static
 
 from mobsf.DynamicAnalyzer.views.common import (
     device,
@@ -394,7 +395,7 @@ if settings.API_ONLY == '0':
 
         # Test
         re_path(r'^tests/$', tests.start_test),
-    ])
+    ])+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 utils.print_version()
 init_exec_hooks()
