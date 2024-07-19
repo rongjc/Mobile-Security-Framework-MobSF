@@ -243,10 +243,9 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     
     file_name = f"compare/{hash1}-{hash2}.html"
     file_temp = f"compare/{hash1}-{hash2}.temp"
-    file_path2 = os.path.join(settings.STATIC_URL, file_name)
-    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
-    file_temp_path = os.path.join(settings.MEDIA_ROOT, file_temp)
-    template = 'static_analysis/compare.html'
+    
+    file_path = os.path.join(settings.STATIC_ABSPATH, file_name)
+    file_temp_path = os.path.join(settings.STATIC_ABSPATH, file_temp)
     shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
     first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
     second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')

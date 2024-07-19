@@ -176,8 +176,8 @@ DATABASES = {
 """
 # ===============================================
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-DEBUG = bool(os.getenv('MOBSF_DEBUG', '0') == '1')
-# DEBUG = False
+# DEBUG = bool(os.getenv('MOBSF_DEBUG', '0') == '1')
+DEBUG = True
 DJANGO_LOG_LEVEL = DEBUG
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = ['127.0.0.1', 'mobsf', '*']
@@ -238,11 +238,16 @@ TEMPLATES = [
             },
     },
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/result/'
 STATIC_URL = '/static/'
 COMPARE_URL = '/static/compare/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),   
+    # os.path.join(BASE_DIR, 'media')
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ABSPATH = os.path.join(BASE_DIR, 'static')
 SCRIPT_ROOT =os.path.join(BASE_DIR, 'script')
 SIMILARITY_SCRIPT_ROOT = os.path.join(SCRIPT_ROOT, 'check_similarity.sh')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

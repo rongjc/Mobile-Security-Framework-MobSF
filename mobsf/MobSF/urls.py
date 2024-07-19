@@ -177,7 +177,9 @@ urlpatterns = [
     # Frida
     re_path(r'^api/v1/frida/ios_instrument$', api_idz.api_ios_instrument),
     re_path(r'^api/v1/dynamic/ios_report_json$', api_idz.api_ios_view_report),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.API_ONLY == '0':
     urlpatterns.extend([
