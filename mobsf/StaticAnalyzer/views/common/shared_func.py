@@ -244,8 +244,8 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     file_name = f"compare/{hash1}-{hash2}.html"
     file_temp = f"compare/{hash1}-{hash2}.temp"
     file_path2 = os.path.join(settings.STATIC_URL, file_name)
-    file_path = os.path.join(settings.STATIC_ROOT, file_name)
-    file_temp_path = os.path.join(settings.STATIC_ROOT, file_temp)
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+    file_temp_path = os.path.join(settings.MEDIA_ROOT, file_temp)
     template = 'static_analysis/compare.html'
     shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
     first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
@@ -253,11 +253,11 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     try:
         result = subprocess.run(['sh', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
         print(result.stdout)
-        call_command('collectstatic', interactive=False, clear=True, verbosity=0)
+        # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
         return JsonResponse({'status': 'success'}, status=200) 
     except subprocess.TimeoutExpired as e:
         print("Command timed out")
-        return JsonResponse({'status': 'failure'}, status=400) 
+        return JsonResponse({'status': 'failure'}, status=4 s00) 
 
 
 def get_avg_cvss(findings):

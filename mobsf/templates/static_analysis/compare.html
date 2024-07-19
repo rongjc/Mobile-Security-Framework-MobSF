@@ -68,9 +68,11 @@
       if (result.value) {
         
           Swal.fire(
-              'Scan Started',
-              'Scan Started Successfully',
+              title: 'Scan Started',
+              text: 'Scan Started Successfully',
+              closeOnClickOutside: false
               )
+              
           Swal.showLoading()
           $.ajax({
                   url: '{% url "start_code_scan" hash1=first_hash hash2=second_hash %}',
