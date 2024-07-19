@@ -230,9 +230,9 @@ def generic_compare(request,
     diff_browsable_activities(context, first_app, second_app)
     file_name = f"compare/{first_hash}-{second_hash}.html"
     file_temp = f"compare/{first_hash}-{second_hash}.temp"
-    file_path2 = os.path.join(settings.STATIC_URL, file_name)
-    file_path = os.path.join(settings.STATIC_ROOT, file_name)
-    file_temp_path = os.path.join(settings.STATIC_ROOT, file_temp)
+    file_path2 = os.path.join(settings.MEDIA_URL, file_name)
+    file_path = os.path.join(settings.MEDIA_ROOT)
+    file_temp_path = os.path.join(settings.MEDIA_ROOT, file_temp)
     context['file_path'] = file_path2
     context['result_file_exist'] = os.path.exists(file_path)
     context['scaning_in_progress'] = os.path.exists(file_temp_path)
