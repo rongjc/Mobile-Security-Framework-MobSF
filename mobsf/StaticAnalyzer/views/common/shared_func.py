@@ -257,7 +257,7 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
         return JsonResponse({'status': 'success'}, status=200) 
     except subprocess.TimeoutExpired as e:
         print("Command timed out")
-        return JsonResponse({'status': 'failure'}, status=4 s00) 
+        return JsonResponse({'status': 'failure'}, status=4) 
 
 
 def get_avg_cvss(findings):
