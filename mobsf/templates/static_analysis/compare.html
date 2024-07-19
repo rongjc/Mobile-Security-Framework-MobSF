@@ -59,6 +59,7 @@
     text: "This will Start Scan.",
     type: "info",
     showCancelButton: true,
+    allowOutsideClick: false,
     confirmButtonText: 'Yes',
     cancelButtonText: 'No',
     confirmButtonColor: '#d33',
@@ -66,10 +67,11 @@
   }).then((result) => {
     console.log(result.value)
       if (result.value) {
-        
-          Swal.fire(
-              'Scan Started',
-              'Scan Started Successfully',
+
+          Swal.fire({
+              title: 'Scan Started',
+              text: 'Scan Started Successfully',
+              allowOutsideClick: false}
               )
               
           Swal.showLoading()

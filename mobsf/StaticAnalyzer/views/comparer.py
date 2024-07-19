@@ -240,6 +240,10 @@ def generic_compare(request,
     context['second_hash'] = second_hash
     template = 'static_analysis/compare.html'
     context['file_exist'] = os.path.exists(file_path)
+    if context['result_file_exist']:
+        with open(file_path, 'r') as file:
+            file_content = file.read()
+        context['file_html'] = file_content
     if api:
         return context
     else:
