@@ -1,0 +1,4 @@
+Group,Artifact,Version,Packaging,Timestamp,Repository,Description
+org.xmtp,android,0.14.8,aar,1721433089000,Maven Central,XMTP Android Library
+com.intuit.playerui,android,0.8.0-next.1,aar,1721414640548,Maven Central,A cross-platform semantic rendering engine
+com.indigitall,android,5.10.1,aar,1721300606000,Maven Central,indigitall SDK for Android
