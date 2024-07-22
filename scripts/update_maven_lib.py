@@ -6,11 +6,11 @@ from tqdm import tqdm
 from xml.etree import ElementTree as ET
 import json
 
-# Function to fetch popular Android libraries from Maven Central
+# Function to fetch popular Android libraries from Maven Central, excluding Android native packages
 def fetch_maven_popular_android_libraries():
     base_url = "https://search.maven.org/solrsearch/select"
     params = {
-        'q': 'android',
+        'q': 'android NOT g:androidx* AND NOT g:com.android*',
         'rows': 100,  # Fetch 100 results per page
         'wt': 'json',
         'sort': 'popularity desc',
@@ -30,7 +30,7 @@ def fetch_maven_popular_android_libraries():
             data = response.json()
             if total_libraries is None:
                 total_libraries = data['response']['numFound']
-                # total_libraries = 2000
+                total_libraries = 4000
                 pbar.total = total_libraries
                 
             for doc in data['response']['docs']:
@@ -73,30 +73,36 @@ async def fetch_pom_details(session, library, semaphore):
                     
                     # Extract description
                     description = root.find('m:description', namespace)
-                    if description is not None:
+                    if description is not None and description.text is not None:
                         library['Description'] = description.text.strip()
                     else:
                         library['Description'] = "No description available"
                     
                     # Extract name
                     name = root.find('m:name', namespace)
-                    if name is not None:
+                    if name is not None and name.text is not None:
                         library['Name'] = name.text.strip()
                     
                     # Extract URL
                     url = root.find('m:url', namespace)
-                    if url is not None:
+                    if url is not None and url.text is not None:
                         library['URL'] = url.text.strip()
                     
                     # Extract licenses
                     licenses = root.find('m:licenses', namespace)
                     if licenses is not None:
-                        library['Licenses'] = ', '.join([license.find('m:name', namespace).text.strip() for license in licenses.findall('m:license', namespace)])
+                        library['Licenses'] = ', '.join([
+                            license.find('m:name', namespace).text.strip() if license.find('m:name', namespace) is not None else "No license name"
+                            for license in licenses.findall('m:license', namespace)
+                        ])
                     
                     # Extract developers
                     developers = root.find('m:developers', namespace)
                     if developers is not None:
-                        library['Developers'] = ', '.join([developer.find('m:name', namespace).text.strip() for developer in developers.findall('m:developer', namespace)])
+                        library['Developers'] = ', '.join([
+                            developer.find('m:name', namespace).text.strip() if developer.find('m:name', namespace) is not None else "No developer name"
+                            for developer in developers.findall('m:developer', namespace)
+                        ])
                     
                 except ET.ParseError:
                     library['Description'] = "Failed to parse POM"
