@@ -30,6 +30,7 @@ def fetch_maven_popular_android_libraries():
             data = response.json()
             if total_libraries is None:
                 total_libraries = data['response']['numFound']
+                # total_libraries = 2000
                 pbar.total = total_libraries
                 
             for doc in data['response']['docs']:
