@@ -30,7 +30,6 @@ def fetch_maven_popular_android_libraries():
             data = response.json()
             if total_libraries is None:
                 total_libraries = data['response']['numFound']
-                total_libraries = 4000
                 pbar.total = total_libraries
                 
             for doc in data['response']['docs']:
@@ -92,7 +91,7 @@ async def fetch_pom_details(session, library, semaphore):
                     licenses = root.find('m:licenses', namespace)
                     if licenses is not None:
                         library['Licenses'] = ', '.join([
-                            license.find('m:name', namespace).text.strip() if license.find('m:name', namespace) is not None else "No license name"
+                            license.find('m:name', namespace).text.strip() if license.find('m:name', namespace) is not None and license.find('m:name', namespace).text is not None else "No license name"
                             for license in licenses.findall('m:license', namespace)
                         ])
                     
@@ -100,7 +99,7 @@ async def fetch_pom_details(session, library, semaphore):
                     developers = root.find('m:developers', namespace)
                     if developers is not None:
                         library['Developers'] = ', '.join([
-                            developer.find('m:name', namespace).text.strip() if developer.find('m:name', namespace) is not None else "No developer name"
+                            developer.find('m:name', namespace).text.strip() if developer.find('m:name', namespace) is not None and developer.find('m:name', namespace).text is not None else "No developer name"
                             for developer in developers.findall('m:developer', namespace)
                         ])
                     
