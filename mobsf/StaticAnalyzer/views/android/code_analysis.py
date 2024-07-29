@@ -70,7 +70,9 @@ def code_analysis(app_dir, typ, manifest_file, android_permissions):
         api_rules = and_rules / 'android_apis.yaml'
         perm_rules = and_rules / 'android_permissions.yaml'
         niap_rules = and_rules / 'android_niap.yaml'
+        sdk_rule = and_rules / 'android_SDK.yaml'
         code_findings = {}
+        sdk_findings = {}
         api_findings = {}
         perm_mappings = {}
         email_n_file = []
@@ -113,6 +115,16 @@ def code_analysis(app_dir, typ, manifest_file, android_permissions):
             [src],
             manifest_file,
             None)
+        
+        # SDK Analysis
+        # logger.info('Android SDK Analysis Started')
+        # sdk_findings = scan(
+        #     sdk_rule.as_posix(),
+        #     {'.java', '.kt'},
+        #     [src],
+        #     skp)
+        
+
         # Extract URLs and Emails
         for pfile in Path(src).rglob('*'):
             if (
@@ -138,6 +150,7 @@ def code_analysis(app_dir, typ, manifest_file, android_permissions):
             'perm_mappings': perm_mappings,
             'findings': code_findings,
             'niap': niap_findings,
+            'sdk': sdk_findings,
             'urls_list': url_list,
             'urls': url_n_file,
             'emails': email_n_file,

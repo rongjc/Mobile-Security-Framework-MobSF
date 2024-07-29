@@ -1,0 +1,28 @@
+{
+    "org.conscrypt": {
+        "Group": "org.conscrypt",
+        "Artifact": "conscrypt-android",
+        "Version": "2.5.2",
+        "Packaging": "aar",
+        "Timestamp": 1617107986000,
+        "Repository": "Maven Central",
+        "Name": "org.conscrypt:conscrypt-android",
+        "URL": "https://conscrypt.org/",
+        "Licenses": "Apache 2",
+        "Developers": "Conscrypt Contributors",
+        "Description": "Conscrypt: Android"
+    },
+    "com.google.android": {
+        "Group": "com.google.android",
+        "Artifact": "android",
+        "Version": "4.1.1.4",
+        "Packaging": "jar",
+        "Timestamp": 1451307370000,
+        "Repository": "Maven Central",
+        "Name": "Google Android Library",
+        "URL": "http://source.android.com/",
+        "Licenses": "Apache 2.0",
+        "Developers": "The Android Open Source Projects",
+        "Description": "A library jar that provides APIs for Applications written for the Google Android Platform."
+    }
+}
