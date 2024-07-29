@@ -60,7 +60,7 @@ echo "Second parameter: $second_file"
 echo "output_file: $output_file" 
 echo "Started the script" > $filte_temp_path
 # Add your script logic here
-# rm $output_file
+rm $output_file
 cd ./test
 rm -rf ../$first_hash-$second_hash
 mkdir $first_hash-$second_hash
@@ -79,8 +79,8 @@ done
 
 echo "All specified files have been removed."
 
-# nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
-# cp "./${first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html" $output_file.bak
+nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
+cp "./${first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html" $output_file.bak
 python3 "$PYTHON_SCRIPT" "$output_file"
 rm -rf ../$first_hash-$second_hash
 rm $filte_temp_path

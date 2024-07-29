@@ -14,7 +14,7 @@ Code Similarity
         <a class="btn  bg-gradient-primary text-white  mb-0 me-1" id="{{ first_hash }}_{{ second_hash }}" onclick="start_code_scan('{{ first_hash }}','{{ second_hash }}')"><i class="fas fa-search"></i>Start Code Scan</a>
       </div>
       {% if file_exist %}
-        <div id="shadow-host" class="embedded-container"></div>
+        {% comment %} <div id="shadow-host" class="embedded-container"></div>
         <script>
           document.addEventListener("DOMContentLoaded", function() {
               var host = document.getElementById('shadow-host');
@@ -26,10 +26,16 @@ Code Similarity
                   ${`{{ file_html|escapejs }}`}
               `;
           });
-      </script>
-        {% comment %} <div width="100%" height="1000px">
+      </script> {% endcomment %}
+        <div width="100%" height="1000px" class="code-similar">
+          <style type="text/css">
+            .code-similar table {background-color:white; border:0px; padding:0px; border-spacing:4px; width:auto; margin-left:10px; margin-right:auto;}
+            .code-similar td {background-color:rgba(192,212,238,0.8); border:0px; box-shadow: inset 0 0 0 2px #fff; padding:8px; width:auto; vertical-align:top; border-radius:8px}
+            .code-similar pre {background-color:white; padding:4px;}
+            .code-similar a {color:darkblue;}
+        </style>
           {{file_html|safe}}
-        </div> {% endcomment %}
+        </div> 
       {% else %}
         <div class="alert alert-secondary text-white font-weight-bold" role="alert" >You don't have any scan history yet. Please scan first.</div>
       {% endif %}

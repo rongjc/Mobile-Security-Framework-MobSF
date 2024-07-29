@@ -1,27 +1,46 @@
-#!/bin/bash
+import sys
+from bs4 import BeautifulSoup
 
-# Retrieve the parameters
-first_hash=$1
-second_hash=$2
-first_file=$3
-second_file=$4
-output_file=$5
-filte_temp_path=$6
+def process_html(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+        
+        # Change the title inside the head tag
+        if soup.head and soup.head.title:
+            soup.head.title.string = "Similarity Report"
+        elif soup.head:
+            new_title = soup.new_tag('title')
+            new_title.string = "Similarity Report"
+            soup.head.append(new_title)
+        else:
+            new_head = soup.new_tag('head')
+            new_title = soup.new_tag('title')
+            new_title.string = "Similarity Report"
+            new_head.append(new_title)
+            soup.html.insert(0, new_head)
+        
+        # Remove content between <h2> tags
+        for h2 in soup.find_all('h2'):
+            h2.clear()
 
-# Example operation with the parameters
-echo "First parameter: $first_file"
-echo "Second parameter: $second_file"
-echo "output_file: $output_file" 
-echo "Started the script" > $filte_temp_path
-# Add your script logic here
-rm $output_file
-cd ./test
-rm -rf ../$first_hash-$second_hash
-mkdir $first_hash-$second_hash
-cd $first_hash-$second_hash
-cp -rf $first_file ./$first_hash
-cp -rf $second_file ./$second_hash
-nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
-cp "./${first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html" $output_file
-rm -rf ../$first_hash-$second_hash
-rm $filte_temp_path
+        # Remove the second row of the first table under body
+        if soup.body:
+            first_table = soup.body.find('table')
+            if first_table:
+                rows = first_table.find_all('tr')
+                if len(rows) > 1:
+                    rows[1].decompose()
+                    rows[0].decompose()
+
+    # Save the modified HTML
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(str(soup))
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python process_html.py <html_file>")
+        sys.exit(1)
+
+    html_file = sys.argv[1]
+    process_html(html_file)
+    print(f"Processed {html_file} successfully.")
