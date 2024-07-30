@@ -80,7 +80,7 @@ done
 echo "All specified files have been removed."
 
 nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
-cp "./${first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html" $output_file.bak
+cp "./${first_hash}_functions-blind-crossclones/${first_hash}_functions-blind-crossclones-0.30-classes-withsource.html" $output_file
 python3 "$PYTHON_SCRIPT" "$output_file"
 rm -rf ../$first_hash-$second_hash
 rm $filte_temp_path
