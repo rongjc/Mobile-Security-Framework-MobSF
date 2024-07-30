@@ -1,5 +1,6 @@
 import sys
 from bs4 import BeautifulSoup
+import re
 
 def process_html(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -31,6 +32,12 @@ def process_html(file_path):
                 if len(rows) > 1:
                     rows[1].decompose()
                     rows[0].decompose()
+            # Regular expression to find the pattern and replace it
+        pattern = r'<p style="font-size:14pt"><b>Class (\d+):</b> &nbsp; (\d+) fragments, nominal size \d+ lines, similarity (\d+)%</p>'
+        replacement = r'<p style="font-size:14pt"><b>Class \1:</b>Code with similarity(\2% lines, \3% Similar)</p>'
+        for match in re.finditer(pattern, str(soup)):
+            soup = re.sub(pattern, replacement, str(soup))
+
 
     # Save the modified HTML
     with open(file_path, 'w', encoding='utf-8') as file:
