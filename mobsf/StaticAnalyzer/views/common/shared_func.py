@@ -253,6 +253,7 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     try:
         result = subprocess.run(['sh', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
         print(result.stdout)
+        print(result.stderr)
         # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
         return JsonResponse({'status': 'success'}, status=200) 
     except subprocess.TimeoutExpired as e:
