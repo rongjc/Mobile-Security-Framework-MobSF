@@ -251,7 +251,7 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
     print(shell_script_path)
     try:
-        result = subprocess.run(['sh', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+        result = subprocess.run(['bash', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
         print(result.stdout)
         print(result.stderr)
         # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
