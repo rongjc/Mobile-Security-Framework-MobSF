@@ -119,7 +119,30 @@
                 </div>
               </div>
             </div>
+  
+                  </div>
+  <!--pagination-->
+  <div class="container mt-5">
+  <nav aria-label="Pagination">
+    <ul class="pagination justify-content-center">
+
+
+      {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="page-item active">
+          <a class="page-link" href="#">{{ i }} </a>
+      </li>
+      {% else %}
+      <li class="page-item">
+          <a class="page-link" href="{% url 'scans_paginated' page_size=page_obj.page_size page_number=i %}">{{ i }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+
+    </ul>
+  </nav>
   </div>
+<!--end pagination-->
 {% endblock %}
 {% block javascripts %}
 

@@ -485,7 +485,7 @@ class RecentScans(object):
 
     def recent_scans(self):
         page = self.request.GET.get('page', 1)
-        page_size = self.request.GET.get('page_size', 10)
+        page_size = self.request.GET.get('page_size', 100)
         result = RecentScansDB.objects.all().values().order_by('-TIMESTAMP')
         try:
             paginator = Paginator(result, page_size)
