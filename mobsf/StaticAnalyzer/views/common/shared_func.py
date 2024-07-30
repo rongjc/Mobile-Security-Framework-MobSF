@@ -249,6 +249,7 @@ def start_code_scan(request, hash1: str, hash2: str, api=False):
     shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
     first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
     second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
+    print(shell_script_path)
     try:
         result = subprocess.run(['sh', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
         print(result.stdout)
