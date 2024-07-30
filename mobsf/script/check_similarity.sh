@@ -23,6 +23,7 @@ prefix_directory="/path/to/your/prefix"
 
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "Script directory: $SCRIPT_DIR"
 
 # Construct the path to the Python script
@@ -63,6 +64,12 @@ directories=(
     "com/unity3d/"
     "com/vungle/"
     "com/appsflyer/"
+    "net/aihelp"
+    "com/safedk"
+    "cn/thinkingdata"
+    "com/pgl"
+    "com/mbridge"
+    "com/iab"
 )
 
 # Example operation with the parameters
