@@ -98,9 +98,9 @@
                           {% if e.PACKAGE_NAME or e.APP_NAME %}
                           <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="../../../{{ e.ANALYZER }}/{{e.MD5}}/"><i class="fas fa-eye"></i> View</a>
                           <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}" onclick="delete_scan(this)" href="#"><i class="fas fa-trash"></i> Delete</a>
-                          {% if is_staff %}
+                          {% comment %} {% if is_staff %} {% endcomment %}
                           <a class="btn btn-sm  diffButton bg-gradient-primary  mb-0 me-1" id="{{ e.MD5 }}_{{ e.FILE_NAME }}"><i class="fas fa-not-equal"></i>Compare</a>
-                          {% endif %}
+                          {% comment %} {% endif %} {% endcomment %}
                           {% comment %} <a class="btn btn-sm  bg-gradient-primary  mb-0 me-1" target="_blank" href="{% url "pdf" checksum=e.MD5%}"><i class="fas fa-file-pdf"></i>PDF</a> {% endcomment %}
                           {% else %}
                           <div class="text-xs font-weight-bold ">
@@ -125,7 +125,6 @@
   <div class="container mt-5">
   <nav aria-label="Pagination">
     <ul class="pagination justify-content-center">
-
 
       {% for i in page_obj.paginator.page_range %}
       {% if page_obj.number == i %}
@@ -220,15 +219,15 @@
         diff_second_name = rows_tds[1].innerText;
 
         Swal.fire({
-            title: '<strong>Diff confirmation</strong>',
+            title: '<strong>Confirmation</strong>',
             type: 'info',
             html:
-                '<strong>Do you want to diff - </strong><br />' + diff_first_name +
+                '<strong>Do you want to compare - </strong><br />' + diff_first_name +
                 '<br /> <strong>with - <br /> </strong>' + diff_second_name + ' <br /> <strong>?</strong>',
 
             showCancelButton: true,
             cancelButtonText: 'Cancel',
-            confirmButtonText: 'Start Diffing!',
+            confirmButtonText: 'Start!',
         }).then((result) => {
             if (result.value) {
                 window.location = '/compare/' + diff_first_md5 + '/' + diff_second_md5 + '/';
