@@ -33,8 +33,8 @@ def process_html(file_path):
                     rows[1].decompose()
                     rows[0].decompose()
             # Regular expression to find the pattern and replace it
-        pattern = r'(\d+) fragments, nominal size \d+ lines, similarity (\d+)%'
-        replacement = r'Code with similarity(\1% lines, \2% Similar)'
+        pattern = r'(\d+) fragments, nominal size (\d+) lines, similarity (\d+)%'
+        replacement = r'Code with similarity(\2 lines, \3% Similar)'
         for match in re.finditer(pattern, str(soup)):
             soup = re.sub(pattern, replacement, str(soup))
 
