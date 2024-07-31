@@ -70,6 +70,7 @@ directories=(
     "cn/thinkingdata"
     "com/pgl"
     "com/mbridge"
+    "org/xutils"
     "com/iab"
     "okio/"
     "retrofit2/"
