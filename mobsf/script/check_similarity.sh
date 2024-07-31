@@ -160,31 +160,31 @@ echo "Started the script" > $filte_temp_path
 echo "Removing old output file if it exists: $output_file"
 rm -f $output_file
 
-echo "Changing directory to ./test"
-cd ./test
+# echo "Changing directory to ./test"
+# cd ./test
 
 echo "Removing old directory: ../$first_hash-$second_hash"
-rm -rf ../$first_hash-$second_hash
+rm -rf $SCRIPT_DIR/temp/$first_hash-$second_hash
 
 echo "Creating new directory: $first_hash-$second_hash"
-mkdir $first_hash-$second_hash
+mkdir $SCRIPT_DIR/temp/$first_hash-$second_hash
 
 echo "Changing directory to: $first_hash-$second_hash"
 cd $first_hash-$second_hash
 
 echo "Copying $first_file to ./$first_hash"
-cp -rf $first_file ./$first_hash
+cp -rf $first_file $SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash
 
 echo "Copying $second_file to ./$second_hash"
-cp -rf $second_file ./$second_hash
+cp -rf $second_file $SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash
 
 # Remove all files from each directory
 for dir in "${directories[@]}"; do
-    full_path="./$first_hash/$dir"
+    full_path="$SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash/$dir"
     echo "Removing files from $full_path"
     rm -rf "$full_path"*
 
-    full_path="./$second_hash/$dir"
+    full_path="$SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash/$dir"
     echo "Removing files from $full_path"
     rm -rf "$full_path"*
 done
@@ -192,16 +192,16 @@ done
 echo "All specified files have been removed."
 
 echo "Running nicad6cross"
-nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
+nicad6cross functions java $SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash $SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash type3-2-report
 
 echo "Copying HTML report to $output_file"
-cp "./${first_hash}_functions-consistent-filter-abstract-crossclones/${first_hash}_*-withsource.html" $output_file
+cp "$SCRIPT_DIR/temp/$first_hash-$second_hash/${first_hash}_functions-consistent-filter-abstract-crossclones/${first_hash}_*-withsource.html" $output_file
 
 echo "Running Python script on $output_file"
 python3 "$PYTHON_SCRIPT" "$output_file"
 
 echo "Removing directory: ../$first_hash-$second_hash"
-rm -rf ../$first_hash-$second_hash
+rm -rf $SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash-$second_hash
 
 echo "Removing filter temporary file: $filte_temp_path"
 rm $filte_temp_path
