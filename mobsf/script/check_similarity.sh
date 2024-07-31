@@ -195,7 +195,7 @@ echo "Running nicad6cross"
 nicad6cross functions java ./$first_hash ./$second_hash type3-2-report
 
 echo "Copying HTML report to $output_file"
-cp "./${first_hash}_functions*/${first_hash}_*-withsource.html" $output_file
+cp "./${first_hash}_functions-consistent-filter-abstract-crossclones/${first_hash}_*-withsource.html" $output_file
 
 echo "Running Python script on $output_file"
 python3 "$PYTHON_SCRIPT" "$output_file"
