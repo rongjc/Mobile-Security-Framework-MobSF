@@ -196,7 +196,7 @@ echo "Running nicad6cross"
 nicad6cross functions java "$SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash" "$SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash" type3-2-report
 
 echo "Copying HTML report to $output_file"
-cp "$SCRIPT_DIR/temp/$first_hash-$second_hash/${first_hash}_functions-consistent-filter-abstract-crossclones/${first_hash}_functions-consistent-filter-abstract-crossclones-0.30-classes-withsource.html" $output_file
+cp "$SCRIPT_DIR/temp/$first_hash-$second_hash/${first_hash}_functions-crossclones/${first_hash}_functions-crossclones-0.30-classes-withsource.html" $output_file
 
 echo "Running Python script on $output_file"
 python3 "$PYTHON_SCRIPT" "$output_file"
