@@ -242,10 +242,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/result/'
 STATIC_URL = '/static/'
 COMPARE_URL = '/static/compare/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),   
-    # os.path.join(BASE_DIR, 'media')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),   
+#     # os.path.join(BASE_DIR, 'media')
+# ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ABSPATH = os.path.join(BASE_DIR, 'static')
 SCRIPT_ROOT =os.path.join(BASE_DIR, 'script')

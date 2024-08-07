@@ -483,13 +483,18 @@ def strings_and_entropies(src, exts):
         'secrets': set(),
         'pinyin': set(),
         'payment': set(),
+        'fileMapping':  {},
     }
     try:
         if not src.exists():
             return data
         excludes = ('\\u0', 'com.google.')
         eslash = ('Ljava', 'Lkotlin', 'kotlin', 'android')
+        
         for p in src.rglob('*'):
+            relative_java_path = p.as_posix().replace(src.as_posix(), '')
+            if relative_java_path.startswith('/'):
+                relative_java_path = relative_java_path[1:]  # Remove the leading '/'
             if p.suffix not in exts or not p.exists():
                 continue
             matches = STRINGS_REGEX.finditer(
@@ -506,6 +511,10 @@ def strings_and_entropies(src, exts):
                 if not string[0].isalnum():
                     continue
                 data['strings'].add(string)
+                if string not in data['fileMapping']:
+                    data['fileMapping'][string] = []
+                data['fileMapping'][string].append(relative_java_path)
+                        
         if data['strings']:
             data['secrets'] = get_entropies(data['strings'])
             data['pinyin'] = select_pinyin_strings(data['strings'])
