@@ -31,17 +31,6 @@ Possible Sensitive Strings
                                 {% for e in strings.fileMapping|key:val  %}
                                     <a href="{% url "view_source" %}?file={{e}}&amp;md5={{ md5}}&amp;type={{app_type}}">{{e}}</a>
                                 {% endfor %}
-                                {% comment %} {% if val|length < 100 %}
-                                {{val}}   
-                                <div>File: {{ strings.fileMapping |key:val }}</div>
-                                {% else %}  
-                                <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsecode{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsecode{{forloop.counter}}">
-                                    Show
-                                </a>
-                                <div class="collapse" id="collapsecode{{forloop.counter}}">
-                                    {{val}}
-                                </div>
-                                {% endif %} {% endcomment %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -54,18 +43,13 @@ Possible Sensitive Strings
                             <td class="col-12 col-xl-1 text-sm p-3">
                                 <span class="badge bg-warning">Payment</span>
                             </td>
-                            <td class="col-12 col-xl-11 text-sm p-3">
-                                {% if val|length < 100 %}
+                            <td class="col-12 col-xl-5 text-sm p-3"> 
                                 {{val}}   
-                                <div>File: {{ strings.fileMapping |key:val }}</div>
-                                {% else %}  
-                                <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapsecode{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapsecode{{forloop.counter}}">
-                                    Show
-                                </a>
-                                <div class="collapse" id="collapsecode{{forloop.counter}}">
-                                    {{val}}
-                                </div>
-                                {% endif %}
+                            </td>           
+                            <td class="col-12 col-xl-6 text-sm p-3">
+                                {% for e in strings.fileMapping|key:val  %}
+                                    <a href="{% url "view_source" %}?file={{e}}&amp;md5={{ md5}}&amp;type={{app_type}}">{{e}}</a>
+                                {% endfor %}
                             </td>
                         </tr>
                     {% endfor %}
