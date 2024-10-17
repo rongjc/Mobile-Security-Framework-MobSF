@@ -42,7 +42,11 @@ SIGNATURE_DIR = os.path.join(MobSF_HOME, 'signatures/')
 TOOLS_DIR = os.path.join(BASE_DIR, 'DynamicAnalyzer/tools/')
 # Secret File
 SECRET_FILE = os.path.join(MobSF_HOME, 'secret')
-
+MAX_SCAN =  { 
+    '1':99999999999,
+    '8': 3,
+    'other': 40
+}
 # ==========Load MobSF User Settings==========
 try:
     if USE_HOME:
@@ -58,7 +62,7 @@ except Exception:
     logger.exception('Reading Config')
     CONFIG_HOME = False
 
-MAX_SCAN = 999999999
+# MAX_SCAN = 999999999
 
 # ===MOBSF SECRET GENERATION AND DB MIGRATION====
 SECRET_KEY = first_run(SECRET_FILE, BASE_DIR, MobSF_HOME)
