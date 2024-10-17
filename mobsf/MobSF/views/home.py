@@ -68,12 +68,15 @@ def index(request):
     current_user = request.user
     key = str(current_user.id)
     maxscan = settings.MAX_SCAN.get(key, settings.MAX_SCAN['other'])
+    # print(current_user.id)
+    # print(RecentScansDB.objects.filter(USER_ID=current_user.id).count())
+    # print("-----------------")
     context = {
         'version': settings.MOBSF_VER,
         'mimes': mimes,
         'exts': '|'.join(exts),
         'max_upload': RecentScansDB.objects.count(),
-        'allow_upload': RecentScansDB.objects.count() < maxscan,
+        'allow_upload': RecentScansDB.objects.filter(USER_ID=current_user.id).count() < maxscan,
         'current_user': current_user.id,
     }
     template = 'general/home.html'
