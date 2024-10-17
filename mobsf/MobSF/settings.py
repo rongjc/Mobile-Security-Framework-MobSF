@@ -45,7 +45,9 @@ SECRET_FILE = os.path.join(MobSF_HOME, 'secret')
 MAX_SCAN =  { 
     '1':99999999999,
     '8': 3,
-    'other': 40
+    '9': 2,
+    '10': 2,
+    'other': 100
 }
 # ==========Load MobSF User Settings==========
 try:
