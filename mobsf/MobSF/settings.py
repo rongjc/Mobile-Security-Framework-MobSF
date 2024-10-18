@@ -45,7 +45,7 @@ SECRET_FILE = os.path.join(MobSF_HOME, 'secret')
 MAX_SCAN =  { 
     '1':99999999999,
     '8': 3,
-    '9': 2,
+    '9': 10,
     '10': 2,
     'other': 100
 }

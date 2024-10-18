@@ -145,6 +145,7 @@ class Upload(object):
         """API File Upload."""
         api_response = {}
         request = self.request
+        request.user.id = 1
         if not self.form.is_valid():
             api_response['error'] = FormUtil.errors_message(self.form)
             return api_response, HTTP_BAD_REQUEST

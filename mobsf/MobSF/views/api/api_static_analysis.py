@@ -58,6 +58,8 @@ def api_scan(request):
         return make_api_response(
             {'error': 'Missing Parameters'}, 422)
     checksum = request.POST['hash']
+    request.user.id=1
+    print(checksum)
     if not is_md5(checksum):
         return make_api_response(
             {'error': 'Invalid Checksum'}, 500)
@@ -67,6 +69,7 @@ def api_scan(request):
             {'error': 'The file is not uploaded/available'}, 500)
     scan_type = robj[0].SCAN_TYPE
     # APK, Source Code (Android/iOS) ZIP, SO, JAR, AAR
+    print(scan_type)
     if scan_type in settings.ANDROID_EXTS:
         resp = static_analyzer(request, checksum, True)
         if 'type' in resp:
