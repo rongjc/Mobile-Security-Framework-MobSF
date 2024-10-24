@@ -108,6 +108,14 @@ def pdf(request, checksum, api=False, jsonres=False):
             MD5=checksum).TIMESTAMP
         try:
             if api and jsonres:
+                del context['manifest_analysis']
+                del context['network_security']
+                del context['malware_permissions']
+                del context['niap_analysis']
+                del context['apkid']
+                del context['base_url']
+                del context['dwd_dir']
+                del context['virus_total']
                 return {'report_dat': context}
             else:
                 options = {
