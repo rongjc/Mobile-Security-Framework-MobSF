@@ -18,6 +18,9 @@ from mobsf.DynamicAnalyzer.views.ios import (
     report as ios_view_report,
     tests_frida as ios_tests_frida,
 )
+from mobsf.StaticAnalyzer.views.comparer import (
+    generic_compare,
+)
 from mobsf.MobSF import utils
 from mobsf.MobSF.security import (
     init_exec_hooks,
@@ -91,7 +94,11 @@ urlpatterns = [
     re_path(r'^api/v1/download_pdf$', api_sz.api_pdf_report),
     re_path(r'^api/v1/report_json$', api_sz.api_json_report),
     re_path(r'^api/v1/download_icon$', api_sz.api_download_icon),
-#     re_path(r'^api/v1/download_icon/123.png$', api_sz.api_download_icon),
+    re_path(r'^api/v1/download_icon$', api_sz.api_download_icon),    
+    re_path(r'^api/v1/code_compare/(?P<hash1>[0-9a-f]{32})/(?P<hash2>[0-9a-f]{32})/$',
+        shared_func.start_code_scan,name='start_code_scan'),   
+   re_path(r'^api/v1/code_compare_report/(?P<hash1>[0-9a-f]{32})/(?P<hash2>[0-9a-f]{32})/$',
+        generic_compare,name='get_code_compare_report'),           
     re_path(r'^api/v1/view_source$', api_sz.api_view_source,
             name='api_view_source'),
     re_path(r'^api/v1/scans$', api_sz.api_recent_scans),
