@@ -1,8 +1,9 @@
 # -*- coding: utf_8 -*-
 """MobSF REST API V 1."""
-from django.http import HttpResponse
+from django.http import HttpResponse,FileResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+import os
 
 from mobsf.StaticAnalyzer.models import (
     RecentScansDB,
@@ -27,7 +28,7 @@ from mobsf.StaticAnalyzer.views.common.suppression import (
 from mobsf.StaticAnalyzer.views.common.pdf import pdf
 from mobsf.StaticAnalyzer.views.common.appsec import appsec_dashboard
 from mobsf.StaticAnalyzer.views.windows import windows
-
+from threading import Thread
 
 @request_method(['POST'])
 @csrf_exempt
@@ -52,6 +53,20 @@ def api_recent_scans(request):
 
 @request_method(['POST'])
 @csrf_exempt
+def api_download_icon(request):
+    filename = request.POST.get('filename', 'default.png')
+    # Construct the full file path
+    file_path = os.path.join(settings.BASE_DIR, settings.DWD_DIR, filename)
+    
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        raise Http404("Image not found.")
+    
+    # Serve the file using FileResponse
+    return FileResponse(open(file_path, 'rb'), content_type='image/png')
+
+@request_method(['POST'])
+@csrf_exempt
 def api_scan(request):
     """POST - Scan API."""
     if 'hash' not in request.POST:
@@ -68,33 +83,48 @@ def api_scan(request):
         return make_api_response(
             {'error': 'The file is not uploaded/available'}, 500)
     scan_type = robj[0].SCAN_TYPE
-    # APK, Source Code (Android/iOS) ZIP, SO, JAR, AAR
-    print(scan_type)
+    # Start the scan in a separate thread
+    Thread(target=process_scan_in_background, args=(request, checksum, scan_type)).start()
+
+    # Return a response immediately
+    return make_api_response({'status': 'Scan started, processing in background'}, 200)
+    # # APK, Source Code (Android/iOS) ZIP, SO, JAR, AAR
+    # # print(scan_type)
+    # if scan_type in settings.ANDROID_EXTS:
+    #     resp = static_analyzer(request, checksum, True)
+    #     if 'type' in resp:
+    #         resp = static_analyzer_ios(request, checksum, True)
+    #     if 'error' in resp:
+    #         response = make_api_response(resp, 500)
+    #     else:
+    #         response = make_api_response(resp, 200)
+    # # IPA
+    # elif scan_type in settings.IOS_EXTS:
+    #     resp = static_analyzer_ios(request, checksum, True)
+    #     if 'error' in resp:
+    #         response = make_api_response(resp, 500)
+    #     else:
+    #         response = make_api_response(resp, 200)
+    # # APPX
+    # elif scan_type in settings.WINDOWS_EXTS:
+    #     resp = windows.staticanalyzer_windows(request, checksum, True)
+    #     if 'error' in resp:
+    #         response = make_api_response(resp, 500)
+    #     else:
+    #         response = make_api_response(resp, 200)
+    # return response
+
+def process_scan_in_background(request, checksum, scan_type):
+    """Handles the scan in a background thread."""
     if scan_type in settings.ANDROID_EXTS:
         resp = static_analyzer(request, checksum, True)
         if 'type' in resp:
             resp = static_analyzer_ios(request, checksum, True)
-        if 'error' in resp:
-            response = make_api_response(resp, 500)
-        else:
-            response = make_api_response(resp, 200)
-    # IPA
     elif scan_type in settings.IOS_EXTS:
         resp = static_analyzer_ios(request, checksum, True)
-        if 'error' in resp:
-            response = make_api_response(resp, 500)
-        else:
-            response = make_api_response(resp, 200)
-    # APPX
     elif scan_type in settings.WINDOWS_EXTS:
         resp = windows.staticanalyzer_windows(request, checksum, True)
-        if 'error' in resp:
-            response = make_api_response(resp, 500)
-        else:
-            response = make_api_response(resp, 200)
-    return response
-
-
+    
 @request_method(['POST'])
 @csrf_exempt
 def api_delete_scan(request):

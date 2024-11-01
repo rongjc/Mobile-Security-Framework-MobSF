@@ -90,6 +90,8 @@ urlpatterns = [
     re_path(r'^api/v1/delete_scan$', api_sz.api_delete_scan),
     re_path(r'^api/v1/download_pdf$', api_sz.api_pdf_report),
     re_path(r'^api/v1/report_json$', api_sz.api_json_report),
+    re_path(r'^api/v1/download_icon$', api_sz.api_download_icon),
+#     re_path(r'^api/v1/download_icon/123.png$', api_sz.api_download_icon),
     re_path(r'^api/v1/view_source$', api_sz.api_view_source,
             name='api_view_source'),
     re_path(r'^api/v1/scans$', api_sz.api_recent_scans),

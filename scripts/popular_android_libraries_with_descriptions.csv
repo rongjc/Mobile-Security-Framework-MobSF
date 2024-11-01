@@ -2,17 +2,3 @@ aGroup,Artifact,Version,Packaging,Timestamp,Repository,Description
 org.xmtp,android,0.14.8,aar,1721433089000,Maven Central,XMTP Android Library
 com.intuit.playerui,android,0.8.0-next.1,aar,1721414640548,Maven Central,A cross-platform semantic rendering engine
 com.indigitall,android,5.10.1,aar,1721300606000,Maven Central,indigitall SDK for Android
-
-
-e83a24db4a941d880dfd675ba2a5ca178b8a02394038260ecc43649ab4730713
-
-
-curl -F 'file=@/Users/jrong/Downloads/xueya.apk' http://localhost/api/v1/upload -H "Authorization:e83a24db4a941d880dfd675ba2a5ca178b8a02394038260ecc43649ab4730713"
-
-
-curl -X POST --url http://localhost/api/v1/scan --data "hash=f2ef76100128c7c7a4ab1eb53c2a806b" -H "Authorization:e83a24db4a941d880dfd675ba2a5ca178b8a02394038260ecc43649ab4730713"
-
-curl -X POST --url http://localhost/api/v1/delete_scan --data "hash=f2ef76100128c7c7a4ab1eb53c2a806b" -H "Authorization:e83a24db4a941d880dfd675ba2a5ca178b8a02394038260ecc43649ab4730713"
-
-
-curl -X POST --url http://localhost/api/v1/scan_logs --data "hash=f2ef76100128c7c7a4ab1eb53c2a806b" -H "Authorization: 6cbbb5fa07ed1a0a93dedb5ba66b7c967b5171280f50a195794a74f159d5d579"
