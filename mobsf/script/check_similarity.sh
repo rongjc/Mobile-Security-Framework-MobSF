@@ -193,6 +193,8 @@ done
 echo "All specified files have been removed."
 
 echo "Running nicad6cross"
+echo "$SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash"
+echo "$SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash" 
 nicad6cross functions java "$SCRIPT_DIR/temp/$first_hash-$second_hash/$first_hash" "$SCRIPT_DIR/temp/$first_hash-$second_hash/$second_hash" type3-2-report
 
 echo "Copying HTML report to $output_file"
