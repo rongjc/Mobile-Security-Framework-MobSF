@@ -71,25 +71,36 @@ def api_download_icon(request):
 @request_method(['GET'])
 @csrf_exempt
 def api_start_code_scan(request, hash1: str, hash2: str):
-    
+    # file_name = f"compare/{hash1}-{hash2}.html"
+    # file_temp = f"compare/{hash1}-{hash2}.temp"
+    # file_path = os.path.join(settings.STATIC_ABSPATH, file_name)
+    # file_temp_path = os.path.join(settings.STATIC_ABSPATH, file_temp)
+    # shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
+    # first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
+    # second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
+    # print(shell_script_path)
+    try:
+        # result = subprocess.run(['bash', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+        # print(result.stdout)
+        # print(result.stderr)
+        # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
+        Thread(target=process_compare_in_background, args=(request, hash1, hash2)).start()
+        return JsonResponse({'status': 'successfully started comparing'}, status=200) 
+    except subprocess.TimeoutExpired as e:
+        print("Command timed out")
+        return JsonResponse({'status': 'failure'}, status=4) 
+
+def process_compare_in_background(request, hash1, hash2):
     file_name = f"compare/{hash1}-{hash2}.html"
     file_temp = f"compare/{hash1}-{hash2}.temp"
     file_path = os.path.join(settings.STATIC_ABSPATH, file_name)
     file_temp_path = os.path.join(settings.STATIC_ABSPATH, file_temp)
     shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
     first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
-    second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
-    print(shell_script_path)
-    try:
-        result = subprocess.run(['bash', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
-        print(result.stdout)
-        print(result.stderr)
-        # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
-        return JsonResponse({'status': 'success'}, status=200) 
-    except subprocess.TimeoutExpired as e:
-        print("Command timed out")
-        return JsonResponse({'status': 'failure'}, status=4) 
-
+    second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')    
+    result = subprocess.run(['bash', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+    print(result.stdout)
+    print(result.stderr)
 
 @request_method(['GET'])
 @csrf_exempt
