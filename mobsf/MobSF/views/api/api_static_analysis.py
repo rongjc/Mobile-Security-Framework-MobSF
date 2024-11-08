@@ -1,10 +1,13 @@
 # -*- coding: utf_8 -*-
 """MobSF REST API V 1."""
-from django.http import HttpResponse,FileResponse, Http404
+from django.http import HttpResponse,FileResponse, Http404,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import subprocess
 from django.conf import settings
 import os
-
+from mobsf.StaticAnalyzer.views.comparer import (
+    generic_compare,
+)
 from mobsf.StaticAnalyzer.models import (
     RecentScansDB,
 )
@@ -64,6 +67,35 @@ def api_download_icon(request):
     
     # Serve the file using FileResponse
     return FileResponse(open(file_path, 'rb'), content_type='image/png')
+
+@request_method(['GET'])
+@csrf_exempt
+def api_start_code_scan(request, hash1: str, hash2: str):
+    
+    file_name = f"compare/{hash1}-{hash2}.html"
+    file_temp = f"compare/{hash1}-{hash2}.temp"
+    file_path = os.path.join(settings.STATIC_ABSPATH, file_name)
+    file_temp_path = os.path.join(settings.STATIC_ABSPATH, file_temp)
+    shell_script_path = settings.SIMILARITY_SCRIPT_ROOT
+    first_src = os.path.join(settings.UPLD_DIR, hash1, 'java_source')
+    second_src = os.path.join(settings.UPLD_DIR, hash2, 'java_source')
+    print(shell_script_path)
+    try:
+        result = subprocess.run(['bash', shell_script_path,hash1,hash2, first_src, second_src, file_path,file_temp_path], capture_output=True, text=True)
+        print(result.stdout)
+        print(result.stderr)
+        # call_command('collectstatic', interactive=False, clear=True, verbosity=0)
+        return JsonResponse({'status': 'success'}, status=200) 
+    except subprocess.TimeoutExpired as e:
+        print("Command timed out")
+        return JsonResponse({'status': 'failure'}, status=4) 
+
+
+@request_method(['GET'])
+@csrf_exempt
+def api_code_compare_report(request, hash1: str, hash2: str):
+   data = generic_compare(request, hash1, hash2, True)
+   return JsonResponse({'data': data}, status=200) 
 
 @request_method(['POST'])
 @csrf_exempt
