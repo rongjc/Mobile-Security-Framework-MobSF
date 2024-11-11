@@ -183,6 +183,7 @@ DATABASES = {
 # ===============================================
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 DEBUG = bool(os.getenv('MOBSF_DEBUG', '0') == '1')
+ALLOWED_HOSTS = ['*'] 
 # DEBUG = True
 DJANGO_LOG_LEVEL = DEBUG
 TEMPLATE_DEBUG = DEBUG
@@ -198,13 +199,14 @@ INSTALLED_APPS = (
     'mobsf.StaticAnalyzer',
     'mobsf.DynamicAnalyzer',
     'mobsf.MobSF',
+    'corsheaders'
     'mobsf.MalwareAnalyzer',
 )
 MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -213,6 +215,7 @@ MIDDLEWARE_CLASSES = (
 MIDDLEWARE = (
     'mobsf.MobSF.views.api.api_middleware.RestApiAuthMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
@@ -360,6 +363,12 @@ USE_X_FORWARDED_HOST = bool(
 USE_X_FORWARDED_PORT = bool(
     os.getenv('MOBSF_USE_X_FORWARDED_PORT', '1') == '1')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# 在 setting.py 末尾添加以下设置
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = ('*')
+
 # ===========================
 # ENTERPRISE FEATURE REQUESTS
 # ===========================
