@@ -199,6 +199,7 @@ INSTALLED_APPS = (
     'mobsf.DynamicAnalyzer',
     'mobsf.MobSF',
     'mobsf.MalwareAnalyzer',
+    'corsheaders',
 )
 MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
@@ -209,6 +210,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 MIDDLEWARE = (
     'mobsf.MobSF.views.api.api_middleware.RestApiAuthMiddleware',
@@ -217,6 +219,7 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
 
 )
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'mobsf.MobSF.urls'
 WSGI_APPLICATION = 'mobsf.MobSF.wsgi.application'
 LANGUAGE_CODE = 'en-us'
